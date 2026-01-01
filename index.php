@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once './config/App.php';
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
