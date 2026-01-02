@@ -62,4 +62,12 @@ class Auth
 
         return UserFactory::create($userData);
     }
+
+    public static function requireLogin(): void
+    {
+        if (!self::isAuthenticated()) {
+            header('Location: ' . BASE_URL . '/pages/auth/login.php');
+            exit;
+        }
+    }
 }
