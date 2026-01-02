@@ -1,5 +1,9 @@
 <?php
 require_once './config/App.php';
+
+$matchRepo = new MatchRepository();
+$matches = $matchRepo->getAllPublished();
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -27,6 +31,7 @@ require_once './config/App.php';
             -webkit-text-fill-color: transparent;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body class="bg-[#0f172a] text-slate-200 overflow-x-hidden">
@@ -78,30 +83,56 @@ require_once './config/App.php';
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Placeholder Card 1 -->
-            <div class="group bg-slate-800/50 border border-slate-700/50 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-all duration-300 transform hover:-translate-y-2">
-                <div class="h-48 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1893&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Match 1">
-                    <div class="absolute top-4 left-4 glass px-3 py-1 rounded-full text-xs font-bold uppercase">Football</div>
+            <?php
+            if (empty($matches)): ?>
+                <div class="col-span-full text-center py-12 text-slate-500">
+                    <p class="text-xl">No upcoming matches scheduled yet.</p>
                 </div>
-                <div class="p-6">
-                    <div class="text-sm text-indigo-400 font-bold mb-2">15 JAN 2026 • 20:45</div>
-                    <h3 class="text-xl font-bold mb-4">PSG vs Real Madrid</h3>
-                    <div class="flex items-center text-slate-400 text-sm mb-6">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        Parc des Princes, Paris
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-black text-white">45€ <span class="text-xs text-slate-500 font-normal">/seat</span></span>
-                        <a href="#" class="px-5 py-2 bg-indigo-600 rounded-xl text-sm font-bold border border-indigo-400 group-hover:bg-white group-hover:text-indigo-600 transition">Book Now</a>
-                    </div>
-                </div>
-            </div>
+            <?php else: ?>
+                <?php foreach ($matches as $match): ?>
+                    <div class="group bg-slate-800/50 border border-slate-700/50 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="h-48 overflow-hidden relative bg-slate-900 flex items-center justify-center p-4 gap-4">
+                            <!-- Logos -->
+                            <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
+                                <?php if ($match['home_team_logo']): ?>
+                                    <img src="assets/img/uploads/logos/<?php echo htmlspecialchars($match['home_team_logo']); ?>" class="w-full h-full object-contain" alt="Home">
+                                <?php else: ?>
+                                    <span class="font-bold text-xl"><?php echo substr($match['home_team_name'], 0, 1); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <span class="text-xl font-bold text-slate-500">VS</span>
+                            <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
+                                <?php if ($match['away_team_logo']): ?>
+                                    <img src="./assets/img/uploads/logos/<?php echo htmlspecialchars($match['away_team_logo']); ?>" class="w-full h-full object-contain" alt="Away">
+                                <?php else: ?>
+                                    <span class="font-bold text-xl"><?php echo substr($match['away_team_name'], 0, 1); ?></span>
+                                <?php endif; ?>
+                            </div>
 
-            <!-- More placeholders can be added here -->
+                            <div class="absolute top-4 left-4 glass px-3 py-1 rounded-full text-xs font-bold uppercase">Football</div>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-indigo-400 font-bold mb-2">
+                                <?php echo date('d M Y • H:i', strtotime($match['match_datetime'])); ?>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">
+                                <?php echo htmlspecialchars($match['home_team_name']); ?> vs <?php echo htmlspecialchars($match['away_team_name']); ?>
+                            </h3>
+                            <div class="flex items-center text-slate-400 text-sm mb-6">
+                                <i class="fa-solid fa-location-dot w-4 h-4 mr-2"></i>
+                                <?php echo htmlspecialchars($match['venue_name']); ?>, <?php echo htmlspecialchars($match['venue_city']); ?>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-black text-white">
+                                    <!-- Price placeholder - assume 50 for now or add to DB -->
+                                    50€ <span class="text-xs text-slate-500 font-normal">/seat</span>
+                                </span>
+                                <a href="pages/matches/details.php?id=<?php echo $match['id']; ?>" class="px-5 py-2 bg-indigo-600 rounded-xl text-sm font-bold border border-indigo-400 group-hover:bg-white group-hover:text-indigo-600 transition">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </section>
 
