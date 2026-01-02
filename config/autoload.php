@@ -10,6 +10,7 @@ spl_autoload_register(function ($className) {
         '',              
         'Repositories/', 
         'Interfaces/',   
+        'Helpers/'
     ];
 
     foreach ($directories as $directory) {
