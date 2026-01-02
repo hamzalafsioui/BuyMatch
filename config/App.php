@@ -13,3 +13,7 @@ define('DB_USER', 'root');
 define('DB_PASS', 'Sa@123456');
 define('DB_NAME', 'buyMatch_db');
 
+// App URL
+define('BASE_URL', 'http://localhost/buyMatch');
+
+require_once __DIR__ . '/Database.php';
