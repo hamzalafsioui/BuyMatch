@@ -1,0 +1,65 @@
+<?php
+
+class Auth
+{
+    public static function login(string $email, string $password): bool
+    {
+        $userRepo = new UserRepository();
+        $userData = $userRepo->findByEmail($email);
+
+        if ($userData && password_verify($password, $userData['password'])) {
+            if (!$userData['is_active']) {
+                return false;
+            }
+
+            $_SESSION['user_id'] = $userData['id'];
+            $_SESSION['role_id'] = $userData['role_id'];
+            $_SESSION['user_email'] = $userData['email'];
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function register(array $data): bool
+    {
+        $userRepo = new UserRepository();
+
+        // Basic validation
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+
+        if ($userRepo->findByEmail($data['email'])) {
+            return false;
+        }
+
+        return $userRepo->create($data);
+    }
+
+    public static function logout(): void
+    {
+        session_unset();
+        session_destroy();
+    }
+
+    public static function isAuthenticated(): bool
+    {
+        return isset($_SESSION['user_id']);
+    }
+
+    public static function getCurrentUser(): ?User
+    {
+        if (!self::isAuthenticated()) {
+            return null;
+        }
+
+        $userRepo = new UserRepository();
+        $userData = $userRepo->find($_SESSION['user_id']);
+
+        if (!$userData) return null;
+
+        return UserFactory::create($userData);
+    }
+}
