@@ -2,32 +2,39 @@
 
 class Seat
 {
-    private $id;
-    private $matchId;
-    private $categoryId;
-    private $seatNumber;
+    private ?int $id;
+    private int $matchId;
+    private int $categoryId;
+    private string $seatNumber;
 
-    public function __construct(array $data = [])
-    {
-        $this->id = $data['id'] ?? null;
-        $this->matchId = $data['match_id'] ?? null;
-        $this->categoryId = $data['category_id'] ?? null;
-        $this->seatNumber = $data['seat_number'] ?? '';
+    public function __construct(
+        ?int $id,
+        int $matchId,
+        int $categoryId,
+        string $seatNumber
+    ) {
+        $this->id = $id;
+        $this->matchId = $matchId;
+        $this->categoryId = $categoryId;
+        $this->seatNumber = $seatNumber;
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
-    public function getMatchId()
+
+    public function getMatchId(): int
     {
         return $this->matchId;
     }
-    public function getCategoryId()
+
+    public function getCategoryId(): int
     {
         return $this->categoryId;
     }
-    public function getSeatNumber()
+
+    public function getSeatNumber(): string
     {
         return $this->seatNumber;
     }
