@@ -39,5 +39,14 @@ class SeatCategory
         return $this->price;
     }
 
-   
+    // fromDatabase for => DB hydration
+    public static function fromDatabase(array $row): self
+    {
+        return new self(
+            isset($row['id']) ? (int)$row['id'] : null,
+            (int)$row['match_id'],
+            $row['name'],
+            (float)$row['price']
+        );
+    }
 }

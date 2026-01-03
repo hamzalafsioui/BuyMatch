@@ -38,4 +38,16 @@ class Seat
     {
         return $this->seatNumber;
     }
+
+    // fromDatabase => for DB hydration
+    public static function fromDatabase(array $row): self
+{
+    return new self(
+        (int)$row['id'],
+        (int)$row['match_id'],
+        $row['name'],
+        (float)$row['price']
+    );
+}
+
 }
