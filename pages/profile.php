@@ -61,7 +61,7 @@ $isOrganizer = $user instanceof Organizer;
                 <div class="flex items-center gap-6">
                     <div class="relative w-24 h-24 rounded-full overflow-hidden bg-slate-800 border-2 border-slate-600">
                         <?php if (!empty($user->getImgPath())): ?>
-                            <img src="<?php echo BASE_URL . '/' . htmlspecialchars($user->getImgPath()); ?>" id="previewImg" class="w-full h-full object-cover">
+                            <img src="<?php echo BASE_URL . '/assets/img/uploads/profiles/' . htmlspecialchars($user->getImgPath()); ?>" id="previewImg" class="w-full h-full object-cover">
                         <?php else: ?>
                             <div id="previewFallback" class="w-full h-full flex items-center justify-center text-slate-500 text-3xl font-bold">
                                 <?php echo substr($user->getFirstname(), 0, 1); ?>
@@ -109,7 +109,7 @@ $isOrganizer = $user instanceof Organizer;
                         <div class="flex items-center gap-6 mb-6">
                             <div class="relative w-16 h-16 rounded-xl overflow-hidden bg-slate-800 border-2 border-slate-600">
                                 <?php if ($user->getLogo()): ?>
-                                    <img src="<?php echo BASE_URL . '/' . htmlspecialchars($user->getLogo()); ?>" id="previewLogo" class="w-full h-full object-cover">
+                                    <img src="<?php echo BASE_URL . '/assets/img/uploads/logos/' . htmlspecialchars($user->getLogo()); ?>" id="previewLogo" class="w-full h-full object-cover">
                                 <?php else: ?>
                                     <div id="previewLogoFallback" class="w-full h-full flex items-center justify-center text-slate-500 text-xs text-center">No Logo</div>
                                     <img id="previewLogo" class="w-full h-full object-cover hidden">
