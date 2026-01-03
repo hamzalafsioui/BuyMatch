@@ -4,26 +4,35 @@ class TicketRepository extends BaseRepository
 {
     public function find(int $id): ?Ticket
     {
-        $query = "SELECT * FROM tickets WHERE id = :id";
+        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name 
+                  FROM tickets t
+                  JOIN matches m ON t.match_id = m.id
+                  JOIN teams ht ON m.home_team_id = ht.id
+                  JOIN teams at ON m.away_team_id = at.id
+                  WHERE t.id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ? new Ticket(
-            $data['id'],
-            $data['user_id'],
-            $data['match_id'],
-            $data['seat_id'],
-            $data['price_paid'],
-            $data['qr_code'],
-            $data['status'],
-            $data['purchase_time']
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? new Ticket(
+            $row['id'],
+            $row['user_id'],
+            $row['match_id'] ?? null,
+            $row['seat_id'] ?? null,
+            (float)($row['price_paid'] ?? 0.0),
+            $row['qr_code'] ?? null,
+            $row['status'] ?? 'VALID',
+            $row['purchase_time'] ?? null,
+            $row['home_team_name'] ?? null,
+            $row['away_team_name'] ?? null,
+            $row['match_datetime'] ?? null
         ) : null;
     }
 
     public function findByUserId(int $userId): array
     {
-        $query = "SELECT t.*, m.match_datetime, ht.name as home_team, at.name as away_team 
+        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name 
                   FROM tickets t
                   JOIN matches m ON t.match_id = m.id
                   JOIN teams ht ON m.home_team_id = ht.id
@@ -41,10 +50,13 @@ class TicketRepository extends BaseRepository
                 $row['user_id'],
                 $row['match_id'],
                 $row['seat_id'] ?? null,
-                $row['price_paid'],
+                (float)$row['price_paid'],
                 $row['qr_code'],
                 $row['status'],
-                $row['purchase_time'] ?? null
+                $row['purchase_time'] ?? null,
+                $row['home_team_name'],
+                $row['away_team_name'],
+                $row['match_datetime']
             );
         }
         return $tickets;
