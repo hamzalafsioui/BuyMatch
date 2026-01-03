@@ -10,7 +10,7 @@ if (!$currentUser || $currentUser->getRoleId() != 2) {
 
 // Get Stats and Recent Activity
 $matchRepo = new MatchRepository();
-$stats = $matchRepo->getStats($_SESSION['user_id']);  
+$stats = $matchRepo->getStats($_SESSION['user_id']);
 
 $userRepo = new UserRepository();
 $userProfile = $userRepo->find($_SESSION['user_id']);
@@ -140,27 +140,27 @@ $recentMatches = $matchRepo->findByOrganizer($_SESSION['user_id']);
                                 <tr class="group hover:bg-slate-800/30 transition-colors">
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-3">
-                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match['home_team_name']); ?></span>
+                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match->getHomeTeamName()); ?></span>
                                             <span class="text-slate-500 text-xs">VS</span>
-                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match['away_team_name']); ?></span>
+                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match->getAwayTeamName()); ?></span>
                                         </div>
                                     </td>
                                     <td class="py-4 px-4">
-                                        <?php echo date('M d, Y • H:i', strtotime($match['match_datetime'])); ?>
+                                        <?php echo date('M d, Y • H:i', strtotime($match->getMatchDatetime())); ?>
                                     </td>
                                     <td class="py-4 px-4 text-slate-400">
-                                        <?php echo htmlspecialchars($match['venue_name']); ?>
+                                        <?php echo htmlspecialchars($match->getVenueName()); ?>
                                     </td>
                                     <td class="py-4 px-4">
                                         <?php
-                                        $statusClass = match ($match['status']) {
+                                        $statusClass = match ($match->getStatus()) {
                                             'PUBLISHED' => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
                                             'FINISHED' => 'bg-slate-700/50 text-slate-400 border-slate-600/20',
                                             default => 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
                                         };
                                         ?>
                                         <span class="px-3 py-1 rounded-full text-xs font-bold border <?php echo $statusClass; ?>">
-                                            <?php echo $match['status']; ?>
+                                            <?php echo $match->getStatus(); ?>
                                         </span>
                                     </td>
                                 </tr>
