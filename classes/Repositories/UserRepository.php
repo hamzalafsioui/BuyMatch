@@ -2,7 +2,7 @@
 
 class UserRepository extends BaseRepository implements IUserRepository
 {
-    public function find(int $id): ?array
+    public function find(int $id): ?User
     {
         $query = "SELECT u.*, o.company_name, o.logo, o.bio, o.is_acceptable 
                   FROM users u 
@@ -12,10 +12,10 @@ class UserRepository extends BaseRepository implements IUserRepository
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $user ?: null;
+        return $user ? UserFactory::create($user) : null;
     }
 
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email): ?User
     {
         $query = "SELECT u.*, o.company_name, o.logo, o.bio, o.is_acceptable 
                   FROM users u 
@@ -25,7 +25,7 @@ class UserRepository extends BaseRepository implements IUserRepository
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $user ?: null;
+        return $user ? UserFactory::create($user) : null;
     }
 
     public function create(array $data): bool
@@ -116,7 +116,7 @@ class UserRepository extends BaseRepository implements IUserRepository
 
             // Update organizers table
             if (isset($data['company_name'])) {
-                
+
                 $queryOrg = "UPDATE organizers SET company_name = :company_name, bio = :bio";
                 if (!empty($data['logo'])) {
                     $queryOrg .= ", logo = :logo";
