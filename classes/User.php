@@ -13,20 +13,28 @@ abstract class User
     protected $isActive;
     protected $createdAt;
 
-    public function __construct(array $data = [])
-    {
-        if (!empty($data)) {
-            $this->id = $data['id'] ?? null;
-            $this->roleId = $data['role_id'] ?? null;
-            $this->firstname = $data['firstname'] ?? '';
-            $this->lastname = $data['lastname'] ?? '';
-            $this->email = $data['email'] ?? '';
-            $this->password = $data['password'] ?? '';
-            $this->phone = $data['phone'] ?? null;
-            $this->imgPath = $data['img_path'] ?? null;
-            $this->isActive = $data['is_active'] ?? true;
-            $this->createdAt = $data['created_at'] ?? null;
-        }
+    public function __construct(
+        ?int $id = null,
+        ?int $roleId = null,
+        string $firstname = '',
+        string $lastname = '',
+        string $email = '',
+        string $password = '',
+        ?string $phone = null,
+        ?string $imgPath = null,
+        bool $isActive = true,
+        ?string $createdAt = null
+    ) {
+        $this->id = $id;
+        $this->roleId = $roleId;
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->email = $email;
+        $this->password = $password;
+        $this->phone = $phone;
+        $this->imgPath = $imgPath;
+        $this->isActive = $isActive;
+        $this->createdAt = $createdAt;
     }
 
     // Getters
@@ -49,6 +57,10 @@ abstract class User
     public function getEmail()
     {
         return $this->email;
+    }
+    public function getPassword()
+    {
+        return $this->password;
     }
     public function getPhone()
     {
