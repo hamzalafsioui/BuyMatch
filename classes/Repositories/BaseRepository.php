@@ -9,4 +9,9 @@ abstract class BaseRepository
         $database = Database::getInstance();
         $this->db = $database->getConnection();
     }
+
+    public function getLastInsertId(): string
+    {
+        return $this->db->lastInsertId();
+    }
 }
