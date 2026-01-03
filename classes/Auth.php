@@ -5,16 +5,16 @@ class Auth
     public static function login(string $email, string $password): bool
     {
         $userRepo = new UserRepository();
-        $userData = $userRepo->findByEmail($email);
+        $user = $userRepo->findByEmail($email);
 
-        if ($userData && password_verify($password, $userData['password'])) {
-            if (!$userData['is_active']) {
+        if ($user && password_verify($password, $user->getPassword())) {
+            if (!$user->getIsActive()) {
                 return false;
             }
 
-            $_SESSION['user_id'] = $userData['id'];
-            $_SESSION['role_id'] = $userData['role_id'];
-            $_SESSION['user_email'] = $userData['email'];
+            $_SESSION['user_id'] = $user->getId();
+            $_SESSION['role_id'] = $user->getRoleId();
+            $_SESSION['user_email'] = $user->getEmail();
 
             return true;
         }
@@ -56,11 +56,7 @@ class Auth
         }
 
         $userRepo = new UserRepository();
-        $userData = $userRepo->find($_SESSION['user_id']);
-
-        if (!$userData) return null;
-
-        return UserFactory::create($userData);
+        return $userRepo->find($_SESSION['user_id']);
     }
 
     public static function requireLogin(): void
