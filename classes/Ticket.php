@@ -11,6 +11,11 @@ class Ticket
     private $status;
     private $purchaseTime;
 
+    // Joined fields
+    private $homeTeamName;
+    private $awayTeamName;
+    private $matchDatetime;
+
     public function __construct(
         ?int $id = null,
         ?int $userId = null,
@@ -19,7 +24,11 @@ class Ticket
         float $pricePaid = 0.0,
         ?string $qrCode = null,
         string $status = 'VALID',
-        ?string $purchaseTime = null
+        ?string $purchaseTime = null,
+        // joined fields
+        ?string $homeTeamName = null,
+        ?string $awayTeamName = null,
+        ?string $matchDatetime = null
     ) {
         $this->id = $id;
         $this->userId = $userId;
@@ -29,6 +38,9 @@ class Ticket
         $this->qrCode = $qrCode;
         $this->status = $status;
         $this->purchaseTime = $purchaseTime;
+        $this->homeTeamName = $homeTeamName;
+        $this->awayTeamName = $awayTeamName;
+        $this->matchDatetime = $matchDatetime;
     }
 
     public function getId()
@@ -62,5 +74,18 @@ class Ticket
     public function getPurchaseTime()
     {
         return $this->purchaseTime;
+    }
+
+    public function getHomeTeamName()
+    {
+        return $this->homeTeamName;
+    }
+    public function getAwayTeamName()
+    {
+        return $this->awayTeamName;
+    }
+    public function getMatchDatetime()
+    {
+        return $this->matchDatetime;
     }
 }
