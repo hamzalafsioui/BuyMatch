@@ -9,14 +9,20 @@ class Review
     private $comment;
     private $createdAt;
 
-    public function __construct(array $data = [])
-    {
-        $this->id = $data['id'] ?? null;
-        $this->userId = $data['user_id'] ?? null;
-        $this->matchId = $data['match_id'] ?? null;
-        $this->rating = $data['rating'] ?? 0;
-        $this->comment = $data['comment'] ?? '';
-        $this->createdAt = $data['created_at'] ?? null;
+    public function __construct(
+        ?int $id = null,
+        ?int $userId = null,
+        ?int $matchId = null,
+        int $rating = 0,
+        string $comment = '',
+        ?string $createdAt = null
+    ) {
+        $this->id = $id;
+        $this->userId = $userId;
+        $this->matchId = $matchId;
+        $this->rating = $rating;
+        $this->comment = $comment;
+        $this->createdAt = $createdAt;
     }
 
     public function getId()
