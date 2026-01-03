@@ -7,13 +7,38 @@ class Organizer extends User
     private $bio;
     private $isAcceptable;
 
-    public function __construct(array $data = [])
-    {
-        parent::__construct($data);
-        $this->companyName = $data['company_name'] ?? null;
-        $this->logo = $data['logo'] ?? null;
-        $this->bio = $data['bio'] ?? null;
-        $this->isAcceptable = $data['is_acceptable'] ?? false;
+    public function __construct(
+        ?int $id = null,
+        ?int $roleId = null,
+        string $firstname = '',
+        string $lastname = '',
+        string $email = '',
+        string $password = '',
+        ?string $phone = null,
+        ?string $imgPath = null,
+        bool $isActive = true,
+        ?string $createdAt = null,
+        ?string $companyName = null,
+        ?string $logo = null,
+        ?string $bio = null,
+        bool $isAcceptable = false
+    ) {
+        parent::__construct(
+            $id,
+            $roleId,
+            $firstname,
+            $lastname,
+            $email,
+            $password,
+            $phone,
+            $imgPath,
+            $isActive,
+            $createdAt
+        );
+        $this->companyName = $companyName;
+        $this->logo = $logo;
+        $this->bio = $bio;
+        $this->isAcceptable = $isAcceptable;
     }
 
     public function getCompanyName()
