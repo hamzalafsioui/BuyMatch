@@ -15,6 +15,7 @@ class Ticket
     private $homeTeamName;
     private $awayTeamName;
     private $matchDatetime;
+    private $categoryName;
 
     public function __construct(
         ?int $id = null,
@@ -28,7 +29,8 @@ class Ticket
         // joined fields
         ?string $homeTeamName = null,
         ?string $awayTeamName = null,
-        ?string $matchDatetime = null
+        ?string $matchDatetime = null,
+        ?string $categoryName = null
     ) {
         $this->id = $id;
         $this->userId = $userId;
@@ -41,6 +43,7 @@ class Ticket
         $this->homeTeamName = $homeTeamName;
         $this->awayTeamName = $awayTeamName;
         $this->matchDatetime = $matchDatetime;
+        $this->categoryName = $categoryName;
     }
 
     public function getId()
@@ -87,5 +90,9 @@ class Ticket
     public function getMatchDatetime()
     {
         return $this->matchDatetime;
+    }
+    public function getCategoryName()
+    {
+        return $this->categoryName;
     }
 }
