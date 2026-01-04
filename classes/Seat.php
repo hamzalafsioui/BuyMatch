@@ -41,13 +41,12 @@ class Seat
 
     // fromDatabase => for DB hydration
     public static function fromDatabase(array $row): self
-{
-    return new self(
-        (int)$row['id'],
-        (int)$row['match_id'],
-        $row['name'],
-        (float)$row['price']
-    );
-}
-
+    {
+        return new self(
+            (int)$row['id'],
+            (int)$row['match_id'],
+            (int)$row['category_id'],
+            $row['seat_number']
+        );
+    }
 }
