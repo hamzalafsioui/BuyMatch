@@ -4,11 +4,13 @@ class TicketRepository extends BaseRepository
 {
     public function find(int $id): ?Ticket
     {
-        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name 
+        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name, sc.name as category_name
                   FROM tickets t
                   JOIN matches m ON t.match_id = m.id
                   JOIN teams ht ON m.home_team_id = ht.id
                   JOIN teams at ON m.away_team_id = at.id
+                  LEFT JOIN seats s ON t.seat_id = s.id
+                  LEFT JOIN seat_categories sc ON s.category_id = sc.id
                   WHERE t.id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id);
@@ -26,17 +28,20 @@ class TicketRepository extends BaseRepository
             $row['purchase_time'] ?? null,
             $row['home_team_name'] ?? null,
             $row['away_team_name'] ?? null,
-            $row['match_datetime'] ?? null
+            $row['match_datetime'] ?? null,
+            $row['category_name'] ?? null
         ) : null;
     }
 
     public function findByUserId(int $userId): array
     {
-        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name 
+        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name, sc.name as category_name
                   FROM tickets t
                   JOIN matches m ON t.match_id = m.id
                   JOIN teams ht ON m.home_team_id = ht.id
                   JOIN teams at ON m.away_team_id = at.id
+                  LEFT JOIN seats s ON t.seat_id = s.id
+                  LEFT JOIN seat_categories sc ON s.category_id = sc.id
                   WHERE t.user_id = :user_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':user_id', $userId);
@@ -56,10 +61,21 @@ class TicketRepository extends BaseRepository
                 $row['purchase_time'] ?? null,
                 $row['home_team_name'],
                 $row['away_team_name'],
-                $row['match_datetime']
+                $row['match_datetime'],
+                $row['category_name'] ?? null
             );
         }
         return $tickets;
+    }
+
+    public function countByUserMatch(int $userId, int $matchId): int
+    {
+        $query = "SELECT COUNT(*) FROM tickets WHERE user_id = :user_id AND match_id = :match_id AND status != 'CANCELLED'";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':match_id', $matchId);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
     }
 
     public function create(array $data): bool
