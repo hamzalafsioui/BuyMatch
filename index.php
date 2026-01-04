@@ -47,8 +47,15 @@ $matches = $matchRepo->getAllPublished();
                 <a href="#" class="hover:text-indigo-400 transition">About</a>
             </div>
             <div class="flex items-center space-x-4">
-                <a href="pages/auth/login.php" class="text-sm font-semibold hover:text-white transition">Sign In</a>
-                <a href="pages/auth/register.php" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all transform hover:-translate-y-0.5">Register</a>
+                <?php if (Auth::isAuthenticated()): ?>
+                    <a href="pages/tickets/history.php" class="text-sm font-semibold hover:text-indigo-400 transition">My Tickets</a>
+                    <a href="pages/profile.php" class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 hover:scale-110 transition-transform">
+                        <?php echo substr($_SESSION['user_firstname'] ?? 'U', 0, 1); ?>
+                    </a>
+                <?php else: ?>
+                    <a href="pages/auth/login.php" class="text-sm font-semibold hover:text-white transition">Sign In</a>
+                    <a href="pages/auth/register.php" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all transform hover:-translate-y-0.5">Register</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -124,8 +131,12 @@ $matches = $matchRepo->getAllPublished();
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-2xl font-black text-white">
-                                    <!-- Price placeholder - assume 50 for now or add to DB -->
-                                    50€ <span class="text-xs text-slate-500 font-normal">/seat</span>
+                                    <?php
+                                    $catRepo = new SeatCategoryRepository();
+                                    $matchCats = $catRepo->findByMatchId($match->getId());
+                                    $minPrice = !empty($matchCats) ? min(array_map(fn($c) => $c->getPrice(), $matchCats)) : 0;
+                                    echo number_format($minPrice, 2);
+                                    ?>€ <span class="text-xs text-slate-500 font-normal">/seat</span>
                                 </span>
                                 <a href="pages/matches/details.php?id=<?php echo $match->getId(); ?>" class="px-5 py-2 bg-indigo-600 rounded-xl text-sm font-bold border border-indigo-400 group-hover:bg-white group-hover:text-indigo-600 transition">Book Now</a>
                             </div>
