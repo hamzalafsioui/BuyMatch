@@ -53,6 +53,10 @@ class Organizer extends User
     {
         return $this->bio;
     }
+    public function getImgLogo()
+{
+    return $this->logo;
+}
     public function isAcceptable()
     {
         return $this->isAcceptable;
