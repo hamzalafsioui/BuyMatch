@@ -15,5 +15,6 @@ define('DB_NAME', 'buyMatch_db');
 
 // App URL
 define('BASE_URL', 'http://localhost/buyMatch');
+define('BASE_PATH', dirname(__DIR__));
 
 require_once __DIR__ . '/Database.php';
