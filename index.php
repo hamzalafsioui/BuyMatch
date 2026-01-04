@@ -102,7 +102,7 @@ $matches = $matchRepo->getAllPublished();
                             <!-- Logos -->
                             <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
                                 <?php if ($match->getHomeTeamLogo()): ?>
-                                    <img src="assets/img/uploads/logos/<?php echo htmlspecialchars($match->getHomeTeamLogo()); ?>" class="w-full h-full object-contain" alt="Home">
+                                    <img src="assets/img/uploads/logos/<?php echo htmlspecialchars($match->getHomeTeamLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
                                 <?php else: ?>
                                     <span class="font-bold text-xl"><?php echo substr($match->getHomeTeamName(), 0, 1); ?></span>
                                 <?php endif; ?>
@@ -110,7 +110,7 @@ $matches = $matchRepo->getAllPublished();
                             <span class="text-xl font-bold text-slate-500">VS</span>
                             <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
                                 <?php if ($match->getAwayTeamLogo()): ?>
-                                    <img src="./assets/img/uploads/logos/<?php echo htmlspecialchars($match->getAwayTeamLogo()); ?>" class="w-full h-full object-contain" alt="Away">
+                                    <img src="./assets/img/uploads/logos/<?php echo htmlspecialchars($match->getAwayTeamLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
                                 <?php else: ?>
                                     <span class="font-bold text-xl"><?php echo substr($match->getAwayTeamName(), 0, 1); ?></span>
                                 <?php endif; ?>
