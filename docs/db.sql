@@ -82,6 +82,7 @@ CREATE TABLE matches (
     match_datetime DATETIME NOT NULL,
     duration_min INT DEFAULT 90,
     total_seats INT,
+    ticket_price DECIMAL(8,2) NOT NULL,
     status ENUM('DRAFT','PUBLISHED','FINISHED') DEFAULT 'DRAFT',
     request_status ENUM('PENDING','APPROVED','REJECTED') DEFAULT 'PENDING',
     avg_rating FLOAT DEFAULT 0,
