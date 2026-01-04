@@ -10,6 +10,7 @@ class MatchEntity
     private $matchDatetime;
     private $durationMin;
     private $totalSeats;
+    private $ticketPrice;
     private $status;
     private $requestStatus;
     private $avgRating;
@@ -32,6 +33,7 @@ class MatchEntity
         ?string $matchDatetime = null,
         int $durationMin = 90,
         ?int $totalSeats = null,
+        float $ticketPrice = 0,
         string $status = 'DRAFT',
         string $requestStatus = 'PENDING',
         float $avgRating = 0,
@@ -52,6 +54,7 @@ class MatchEntity
         $this->matchDatetime = $matchDatetime;
         $this->durationMin = $durationMin;
         $this->totalSeats = $totalSeats;
+        $this->ticketPrice = $ticketPrice;
         $this->status = $status;
         $this->requestStatus = $requestStatus;
         $this->avgRating = $avgRating;
@@ -97,6 +100,10 @@ class MatchEntity
     public function getTotalSeats()
     {
         return $this->totalSeats;
+    }
+    public function getTicketPrice()
+    {
+        return $this->ticketPrice;
     }
     public function getStatus()
     {
