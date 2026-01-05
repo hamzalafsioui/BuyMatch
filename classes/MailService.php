@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class MailService implements IMailService
 {
-    
+
     public static function sendTicket(User $user, array $tickets)
     {
         $success = false;
@@ -41,7 +41,7 @@ class MailService implements IMailService
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'mta131276@gmail.com';
-        $mail->Password   = 'uxfekukvilevxjtt'; 
+        $mail->Password   = 'uxfekukvilevxjtt';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
@@ -57,7 +57,10 @@ class MailService implements IMailService
         $subject = "Your Match Tickets - BuyMatch";
         $count = count($tickets);
 
-
+        $logDir = BASE_PATH . "/logs";
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0777, true);
+        }
         $logMessage = "[" . date('Y-m-d H:i:s') . "] EMAIL TO $to: $subject. Attached $count tickets.\n";
         file_put_contents(BASE_PATH . '/logs/emails.log', $logMessage, FILE_APPEND);
 
