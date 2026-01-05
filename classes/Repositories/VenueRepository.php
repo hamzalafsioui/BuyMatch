@@ -47,4 +47,26 @@ class VenueRepository extends BaseRepository
         $stmt->bindParam(':capacity', $data['capacity']);
         return $stmt->execute();
     }
+    public function findByTicketId($ticketId): ?Venue{
+          $query = "
+            SELECT v.* 
+            FROM venues v
+            INNER JOIN matches m ON m.venue_id = v.id
+            INNER JOIN tickets t ON t.match_id = m.id
+            WHERE t.id = :ticket_id
+            LIMIT 1
+        ";
+         $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':ticket_id', $ticketId, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $data ? new Venue(
+            $data['id'],
+            $data['name'],
+            $data['city'],
+            $data['address'],
+            $data['capacity']
+        ) : null;
+    }
 }
