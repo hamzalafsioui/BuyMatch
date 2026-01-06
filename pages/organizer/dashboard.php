@@ -140,27 +140,27 @@ $recentMatches = $matchRepo->findByOrganizer($_SESSION['user_id']);
                                 <tr class="group hover:bg-slate-800/30 transition-colors">
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-3">
-                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match->getHomeTeamName()); ?></span>
+                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match->homeTeamName); ?></span>
                                             <span class="text-slate-500 text-xs">VS</span>
-                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match->getAwayTeamName()); ?></span>
+                                            <span class="font-bold text-white"><?php echo htmlspecialchars($match->awayTeamName); ?></span>
                                         </div>
                                     </td>
                                     <td class="py-4 px-4">
-                                        <?php echo date('M d, Y • H:i', strtotime($match->getMatchDatetime())); ?>
+                                        <?php echo date('M d, Y • H:i', strtotime($match->matchDatetime)); ?>
                                     </td>
                                     <td class="py-4 px-4 text-slate-400">
-                                        <?php echo htmlspecialchars($match->getVenueName()); ?>
+                                        <?php echo htmlspecialchars($match->venueName); ?>
                                     </td>
                                     <td class="py-4 px-4">
                                         <?php
-                                        $statusClass = match ($match->getStatus()) {
+                                        $statusClass = match ($match->status) {
                                             'PUBLISHED' => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
                                             'FINISHED' => 'bg-slate-700/50 text-slate-400 border-slate-600/20',
                                             default => 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
                                         };
                                         ?>
                                         <span class="px-3 py-1 rounded-full text-xs font-bold border <?php echo $statusClass; ?>">
-                                            <?php echo $match->getStatus(); ?>
+                                            <?php echo $match->status; ?>
                                         </span>
                                     </td>
                                 </tr>
