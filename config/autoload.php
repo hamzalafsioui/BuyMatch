@@ -2,15 +2,16 @@
 
 // Automatically load classes from the /classes directory
 spl_autoload_register(function ($className) {
-    
+
     $baseDir = __DIR__ . '/../classes/';
 
-    
+
     $directories = [
-        '',              
-        'Repositories/', 
-        'Interfaces/',   
-        'Helpers/'
+        '',
+        'Repositories/',
+        'Interfaces/',
+        'Helpers/',
+        'DTO/'
     ];
 
     foreach ($directories as $directory) {
