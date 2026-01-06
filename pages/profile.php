@@ -5,10 +5,13 @@ Auth::requireLogin();
 $userId = $_SESSION['user_id'];
 $userRepo = new UserRepository();
 $user = $userRepo->find($userId);
+$roleId = $user->getRoleId();
 
 
 $isOrganizer = $user instanceof Organizer;
 /** @var Organizer $user */ // Skip the IDE error
+
+$isAdmin = $roleId === 3;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,19 +39,26 @@ $isOrganizer = $user instanceof Organizer;
 
     <?php if ($isOrganizer): ?>
         <?php include '../includes/organizer_sidebar.php'; ?>
-    <?php else: ?>
-        <!-- Basic Nav for others -->
-        <nav class="fixed top-0 w-full z-50 glass border-b border-slate-700/50">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="../index.php" class="text-2xl font-black text-white">BuyMatch</a>
-                <div class="flex items-center gap-4">
-                    <a href="../index.php" class="text-slate-400 hover:text-white transition">Browse Matches</a>
-                    <span class="text-slate-600">|</span>
-                    <a href="../actions/Auth/logout.action.php" class="text-red-400 hover:text-red-300 transition">Log Out</a>
-                </div>
-            </div>
-        </nav>
+    <?php elseif ($isAdmin): ?>
+        <?php
+        include '../includes/admin_sidebar.php'
+        ?>
     <?php endif; ?>
+    <!-- Basic Nav for others -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="../index.php" class="text-2xl font-black text-white">BuyMatch</a>
+            <div class="flex items-center gap-4">
+                <a href="../index.php" class="text-slate-400 hover:text-white transition">Browse Matches</a>
+                <span class="text-slate-600">|</span>
+
+                <?= $isAdmin ? '<a href="../pages/admin/dashboard.php" class="text-slate-400 hover:text-white transition">Admin Dashboard</a>
+                    <span class="text-slate-600">|</span>' : '' ?>
+
+                <a href="../actions/Auth/logout.action.php" class="text-red-400 hover:text-red-300 transition">Log Out</a>
+            </div>
+        </div>
+    </nav>
 
     <main class="<?php echo $isOrganizer ? 'lg:ml-64' : 'pt-20'; ?> min-h-screen p-8 flex justify-center">
 
