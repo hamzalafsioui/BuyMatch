@@ -204,5 +204,20 @@ class MatchRepository extends BaseRepository
         return $stmt->execute();
     }
 
+    public function getGlobalStatsForAdmin(): array
+    {
+        $stats = [];
+
+        $query = "SELECT COUNT(*) FROM matches";
+        $stats['total_matches'] = $this->db->query($query)->fetchColumn();
+
+        $query = "SELECT COUNT(*) FROM matches WHERE request_status = 'APPROVED'";
+        $stats['approved_matches'] = $this->db->query($query)->fetchColumn();
+
+        $query = "SELECT SUM(price_paid) FROM tickets WHERE status IN ('VALID', 'USED')";
+        $stats['total_revenue'] = $this->db->query($query)->fetchColumn() ?: 0;
+
+        return $stats;
+    }
     
 }
