@@ -101,18 +101,18 @@ $matches = $matchRepo->getAllPublished();
                         <div class="h-48 overflow-hidden relative bg-slate-900 flex items-center justify-center p-4 gap-4">
                             <!-- Logos -->
                             <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
-                                <?php if ($match->getHomeTeamLogo()): ?>
-                                    <img src="assets/img/uploads/logos/<?php echo htmlspecialchars($match->getHomeTeamLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
+                                <?php if ($match->homeTeamLogo): ?>
+                                    <img src="assets/img/uploads/logos/<?php echo htmlspecialchars($match->homeTeamLogo); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
                                 <?php else: ?>
-                                    <span class="font-bold text-xl"><?php echo substr($match->getHomeTeamName(), 0, 1); ?></span>
+                                    <span class="font-bold text-xl"><?php echo substr($match->homeTeamName, 0, 1); ?></span>
                                 <?php endif; ?>
                             </div>
                             <span class="text-xl font-bold text-slate-500">VS</span>
                             <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
-                                <?php if ($match->getAwayTeamLogo()): ?>
-                                    <img src="./assets/img/uploads/logos/<?php echo htmlspecialchars($match->getAwayTeamLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
+                                <?php if ($match->awayTeamLogo): ?>
+                                    <img src="./assets/img/uploads/logos/<?php echo htmlspecialchars($match->awayTeamLogo); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
                                 <?php else: ?>
-                                    <span class="font-bold text-xl"><?php echo substr($match->getAwayTeamName(), 0, 1); ?></span>
+                                    <span class="font-bold text-xl"><?php echo substr($match->awayTeamName, 0, 1); ?></span>
                                 <?php endif; ?>
                             </div>
 
@@ -120,25 +120,25 @@ $matches = $matchRepo->getAllPublished();
                         </div>
                         <div class="p-6">
                             <div class="text-sm text-indigo-400 font-bold mb-2">
-                                <?php echo date('d M Y • H:i', strtotime($match->getMatchDatetime())); ?>
+                                <?php echo date('d M Y • H:i', strtotime($match->matchDatetime)); ?>
                             </div>
                             <h3 class="text-xl font-bold mb-4">
-                                <?php echo htmlspecialchars($match->getHomeTeamName()); ?> vs <?php echo htmlspecialchars($match->getAwayTeamName()); ?>
+                                <?php echo htmlspecialchars($match->homeTeamName); ?> vs <?php echo htmlspecialchars($match->awayTeamName); ?>
                             </h3>
                             <div class="flex items-center text-slate-400 text-sm mb-6">
                                 <i class="fa-solid fa-location-dot w-4 h-4 mr-2"></i>
-                                <?php echo htmlspecialchars($match->getVenueName()); ?>, <?php echo htmlspecialchars($match->getVenueCity()); ?>
+                                <?php echo htmlspecialchars($match->venueName); ?>, <?php echo htmlspecialchars($match->venueCity); ?>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-2xl font-black text-white">
                                     <?php
                                     $catRepo = new SeatCategoryRepository();
-                                    $matchCats = $catRepo->findByMatchId($match->getId());
+                                    $matchCats = $catRepo->findByMatchId($match->matchId);
                                     $minPrice = !empty($matchCats) ? min(array_map(fn($c) => $c->getPrice(), $matchCats)) : 0;
                                     echo number_format($minPrice, 2);
                                     ?>€ <span class="text-xs text-slate-500 font-normal">/seat</span>
                                 </span>
-                                <a href="pages/matches/details.php?id=<?php echo $match->getId(); ?>" class="px-5 py-2 bg-indigo-600 rounded-xl text-sm font-bold border border-indigo-400 group-hover:bg-white group-hover:text-indigo-600 transition">Book Now</a>
+                                <a href="pages/matches/details.php?id=<?php echo $match->matchId; ?>" class="px-5 py-2 bg-indigo-600 rounded-xl text-sm font-bold border border-indigo-400 group-hover:bg-white group-hover:text-indigo-600 transition">Book Now</a>
                             </div>
                         </div>
                     </div>
