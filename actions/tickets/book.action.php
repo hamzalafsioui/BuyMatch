@@ -39,10 +39,17 @@ if (!$match || !$category) {
     exit;
 }
 
-// Check ticket limit
+// Check ticket limit tickets (MAX 4)
 $existingCount = $ticketRepo->countByUserMatch($_SESSION['user_id'], $matchId);
 if (($existingCount + $qty) > 4) {
     echo json_encode(['success' => false, 'message' => "You can only book up to 4 tickets per match. You already have $existingCount."]);
+    exit;
+}
+
+// Check Limit places (MAX 2000);
+$existingPlaceCount = $seatRepo->countByMatchId($matchId);
+if($existingPlaceCount >2000){
+    echo json_encode(['success'=>false,'message'=>  "The maximum number of seats for this match (2000) has been reached."]);
     exit;
 }
 
