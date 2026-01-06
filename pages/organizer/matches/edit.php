@@ -1,6 +1,7 @@
 <?php
 // require_once '../../../config/App.php';
-require_once '../../../includes/guards/organizer.guard.php';
+require_once '../../../includes/guards/role.guard.php';
+requireRole(2);
 
 $matchId = $_GET['id'] ?? null;
 if (!$matchId) {
@@ -32,7 +33,7 @@ $categories = $catRepo->findByMatchId($matchId);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Match | BuyMatch</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../assets/js/tailwind.config.js"></script>
+    <script src="../../../assets/js/tailwind.config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>

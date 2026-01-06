@@ -1,7 +1,10 @@
 <?php
 // require_once '../../config/App.php';
 
-require_once '../../../includes/guards/organizer.guard.php';
+require_once __DIR__ . '/../../includes/guards/role.guard.php';
+requireRole(2);
+
+$currentUser = Auth::getCurrentUser();
 
 
 // Get Stats and Recent Activity
