@@ -114,7 +114,7 @@ class MatchRepository extends BaseRepository
         $stats = [
             'total_matches' => 0,
             'upcoming_matches' => 0,
-            'total_seats_sold' => 0 
+            'total_seats_sold' => 0
         ];
 
         // Total Matches
@@ -177,4 +177,23 @@ class MatchRepository extends BaseRepository
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+    public function getAllRequests(): array
+    {
+        $query = "SELECT m.*, ht.name as home_team_name, ht.logo as home_team_logo, 
+                         at.name as away_team_name, at.logo as away_team_logo,
+                         v.name as venue_name, v.city as venue_city,
+                         u.firstname, u.lastname
+                  FROM matches m
+                  JOIN teams ht ON m.home_team_id = ht.id
+                  JOIN teams at ON m.away_team_id = at.id
+                  JOIN venues v ON m.venue_id = v.id
+                  JOIN users u ON m.organizer_id = u.id
+                  WHERE m.request_status = 'PENDING'
+                  ORDER BY m.created_at DESC";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
 }
