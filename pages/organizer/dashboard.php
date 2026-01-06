@@ -1,12 +1,8 @@
 <?php
-require_once '../../config/App.php';
+// require_once '../../config/App.php';
 
-// Ensure user is logged in and is an organizer
-$currentUser = Auth::getCurrentUser();
-if (!$currentUser || $currentUser->getRoleId() != 2) {
-    header('Location: ../../pages/auth/login.php');
-    exit;
-}
+require_once '../../../includes/guards/organizer.guard.php';
+
 
 // Get Stats and Recent Activity
 $matchRepo = new MatchRepository();
