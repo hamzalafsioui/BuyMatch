@@ -33,4 +33,14 @@ class SeatRepository extends BaseRepository
         $stmt->execute();
         return (int)$stmt->fetchColumn() === 0;
     }
+    
+    public function  countByMatchId($matchId)
+    {
+
+        $query = "SELECT COUNT(*) AS total_places FROM seats WHERE match_id = :match_id;";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':match_id', $matchId);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
 }
