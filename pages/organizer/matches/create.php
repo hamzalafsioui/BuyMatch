@@ -1,11 +1,8 @@
 <?php
-require_once '../../../config/App.php';
+// require_once '../../../config/App.php';
 
-$currentUser = Auth::getCurrentUser();
-if (!$currentUser || $currentUser->getRoleId() != 2) {
-    header('Location: ../../pages/auth/login.php');
-    exit;
-}
+require_once '../../../includes/guards/organizer.guard.php';
+
 
 $teamRepo = new TeamRepository();
 $venueRepo = new VenueRepository();
