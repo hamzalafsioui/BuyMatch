@@ -11,11 +11,11 @@ if (!$ticketId) {
 }
 
 $ticketRepo = new TicketRepository();
-$ticket = $ticketRepo->find($ticketId);
+$ticket = $ticketRepo->findDetails($ticketId);
 $venueRepo = new VenueRepository();
 $venue = $venueRepo->findByTicketId($ticketId);
 
-if (!$ticket || $ticket->getUserId() != $userId) {
+if (!$ticket || $ticket->userId != $userId) {
     die('Ticket not found or access denied.');
 }
 
@@ -28,7 +28,7 @@ if (!$ticket || $ticket->getUserId() != $userId) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket #<?php echo $ticket->getId(); ?> | BuyMatch</title>
+    <title>Ticket #<?php echo $ticket->ticketId; ?> | BuyMatch</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -79,7 +79,7 @@ if (!$ticket || $ticket->getUserId() != $userId) {
             <div class="relative z-10 text-center text-white px-6">
                 <p class="text-[10px] font-black uppercase tracking-[0.3em] mb-2 opacity-80">Official Stadium Ticket</p>
                 <h1 class="text-2xl font-black italic">
-                    <?php echo htmlspecialchars($ticket->getHomeTeamName()); ?> vs <?php echo htmlspecialchars($ticket->getAwayTeamName()); ?>
+                    <?php echo htmlspecialchars($ticket->homeTeamName); ?> vs <?php echo htmlspecialchars($ticket->awayTeamName); ?>
                 </h1>
             </div>
         </div>
@@ -93,8 +93,8 @@ if (!$ticket || $ticket->getUserId() != $userId) {
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Date & Time</p>
-                        <p class="font-bold text-slate-800"><?php echo date('l, F d, Y', strtotime($ticket->getMatchDatetime())); ?></p>
-                        <p class="text-sm text-slate-500"><?php echo date('H:i', strtotime($ticket->getMatchDatetime())); ?> (Local Time)</p>
+                        <p class="font-bold text-slate-800"><?php echo date('l, F d, Y', strtotime($ticket->matchDatetime)); ?></p>
+                        <p class="text-sm text-slate-500"><?php echo date('H:i', strtotime($ticket->matchDatetime)); ?> (Local Time)</p>
                     </div>
                 </div>
 
@@ -120,11 +120,11 @@ if (!$ticket || $ticket->getUserId() != $userId) {
             <div class="grid grid-cols-2 gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Row/Seat</p>
-                    <p class="text-lg font-black text-indigo-600"><?php echo htmlspecialchars($ticket->getSeatId() ?? 'General'); ?></p>
+                    <p class="text-lg font-black text-indigo-600"><?php echo htmlspecialchars($ticket->seatId ?? 'General'); ?></p>
                 </div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Category</p>
-                    <p class="text-lg font-bold text-slate-800"><?php echo htmlspecialchars($ticket->getCategoryName() ?? 'Standard'); ?></p>
+                    <p class="text-lg font-bold text-slate-800"><?php echo htmlspecialchars($ticket->categoryName ?? 'Standard'); ?></p>
                 </div>
             </div>
 
@@ -132,11 +132,11 @@ if (!$ticket || $ticket->getUserId() != $userId) {
             <div class="text-center pt-4 border-t-2 border-dashed border-slate-200">
                 <div class="inline-block p-4 bg-white border border-slate-200 rounded-3xl mb-4">
                     <!-- Using a QR code API for real generation -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($ticket->getQrCode()); ?>"
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($ticket->qrCode); ?>"
                         alt="QR Code" class="w-32 h-32">
                 </div>
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Ticket ID</p>
-                <p class="font-mono text-sm tracking-widest text-slate-600"><?php echo $ticket->getQrCode(); ?></p>
+                <p class="font-mono text-sm tracking-widest text-slate-600"><?php echo $ticket->qrCode; ?></p>
             </div>
         </div>
 
