@@ -4,34 +4,69 @@ class TicketRepository extends BaseRepository
 {
     public function find(int $id): ?Ticket
     {
-        $query = "SELECT t.*, m.match_datetime, ht.name as home_team_name, at.name as away_team_name, sc.name as category_name
-                  FROM tickets t
-                  JOIN matches m ON t.match_id = m.id
-                  JOIN teams ht ON m.home_team_id = ht.id
-                  JOIN teams at ON m.away_team_id = at.id
-                  LEFT JOIN seats s ON t.seat_id = s.id
-                  LEFT JOIN seat_categories sc ON s.category_id = sc.id
-                  WHERE t.id = :id";
+        $query = "SELECT * FROM tickets WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $row ? new Ticket(
             $row['id'],
             $row['user_id'],
-            $row['match_id'] ?? null,
-            $row['seat_id'] ?? null,
-            (float)($row['price_paid'] ?? 0.0),
-            $row['qr_code'] ?? null,
-            $row['status'] ?? 'VALID',
-            $row['purchase_time'] ?? null,
-            $row['home_team_name'] ?? null,
-            $row['away_team_name'] ?? null,
-            $row['match_datetime'] ?? null,
-            $row['category_name'] ?? null
+            $row['match_id'],
+            $row['seat_id'],
+            (float)$row['price_paid'],
+            $row['qr_code'],
+            $row['status'],
+            $row['purchase_time']
         ) : null;
     }
+    
+    public function findDetails(int $id): ?TicketDetailsDTO
+    {
+        $query = "
+        SELECT
+            t.id AS ticket_id,
+            t.user_id,
+            t.price_paid,
+            t.status,
+            t.purchase_time,
+            t.qr_code,
+            t.seat_id,
+            m.match_datetime,
+            ht.name AS home_team_name,
+            at.name AS away_team_name,
+            sc.name AS category_name
+        FROM tickets t
+        JOIN matches m ON t.match_id = m.id
+        JOIN teams ht ON m.home_team_id = ht.id
+        JOIN teams at ON m.away_team_id = at.id
+        LEFT JOIN seats s ON t.seat_id = s.id
+        LEFT JOIN seat_categories sc ON s.category_id = sc.id
+        WHERE t.id = :id
+    ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? new TicketDetailsDTO(
+            $row['ticket_id'],
+            $row['user_id'],
+            (float)$row['price_paid'],
+            $row['status'],
+            $row['purchase_time'],
+            $row['qr_code'],
+            $row['seat_id'],
+            $row['home_team_name'],
+            $row['away_team_name'],
+            $row['match_datetime'],
+            $row['category_name']
+        ) : null;
+    }
+
 
     public function findByUserId(int $userId): array
     {
@@ -50,15 +85,14 @@ class TicketRepository extends BaseRepository
 
         $tickets = [];
         foreach ($rows as $row) {
-            $tickets[] = new Ticket(
-                $row['id'],
-                $row['user_id'],
-                $row['match_id'],
-                $row['seat_id'] ?? null,
+            $tickets[] = new TicketDetailsDTO(
+                (int)$row['id'],
+                (int)$row['user_id'],
                 (float)$row['price_paid'],
-                $row['qr_code'],
                 $row['status'],
-                $row['purchase_time'] ?? null,
+                $row['purchase_time'] ?? '',
+                $row['qr_code'],
+                isset($row['seat_id']) ? (int)$row['seat_id'] : null,
                 $row['home_team_name'],
                 $row['away_team_name'],
                 $row['match_datetime'],
