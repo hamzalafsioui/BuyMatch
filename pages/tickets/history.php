@@ -73,35 +73,35 @@ $tickets = $ticketRepo->findByUserId($userId);
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-6">
                                 <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-500/20 uppercase tracking-widest">
-                                    <?php echo $ticket->getStatus(); ?>
+                                    <?php echo $ticket->status; ?>
                                 </span>
-                                <span class="text-slate-500 text-xs">#<?php echo str_pad($ticket->getId(), 6, '0', STR_PAD_LEFT); ?></span>
+                                <span class="text-slate-500 text-xs">#<?php echo str_pad((string)$ticket->ticketId, 6, '0', STR_PAD_LEFT); ?></span>
                             </div>
 
                             <div class="mb-6">
                                 <h3 class="text-xl font-black text-white group-hover:text-indigo-400 transition">
-                                    <?php echo htmlspecialchars($ticket->getHomeTeamName()); ?>
+                                    <?php echo htmlspecialchars($ticket->homeTeamName); ?>
                                     <span class="text-slate-500 font-normal mx-2">VS</span>
-                                    <?php echo htmlspecialchars($ticket->getAwayTeamName()); ?>
+                                    <?php echo htmlspecialchars($ticket->awayTeamName); ?>
                                 </h3>
                                 <p class="text-slate-400 text-sm mt-1">
                                     <i class="fa-calendar-days fa-regular mr-2"></i>
-                                    <?php echo date('M d, Y - H:i', strtotime($ticket->getMatchDatetime())); ?>
+                                    <?php echo date('M d, Y - H:i', strtotime($ticket->matchDatetime)); ?>
                                 </p>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4 mb-6 bg-slate-900/50 p-4 rounded-2xl border border-slate-700/30">
                                 <div>
                                     <p class="text-[10px] font-bold text-slate-500 uppercase">Seat ID</p>
-                                    <p class="text-white font-bold"><?php echo htmlspecialchars($ticket->getSeatId() ?? 'N/A'); ?></p>
+                                    <p class="text-white font-bold"><?php echo htmlspecialchars($ticket->seatId ?? 'N/A'); ?></p>
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-bold text-slate-500 uppercase">Price</p>
-                                    <p class="text-indigo-400 font-black"><?php echo number_format($ticket->getPricePaid(), 2); ?>€</p>
+                                    <p class="text-indigo-400 font-black"><?php echo number_format($ticket->pricePaid, 2); ?>€</p>
                                 </div>
                             </div>
 
-                            <a href="ticket_view.php?id=<?php echo $ticket->getId(); ?>"
+                            <a href="ticket_view.php?id=<?php echo $ticket->ticketId; ?>"
                                 class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white text-sm font-bold rounded-xl transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-expand"></i>
                                 View Ticket Details
