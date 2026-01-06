@@ -142,4 +142,48 @@ class UserRepository extends BaseRepository implements IUserRepository
             return false;
         }
     }
+
+
+    public function getAll(): array
+    {
+        $query = "SELECT u.*, r.name as role_name, o.is_acceptable 
+                  FROM users u 
+                  JOIN roles r ON u.role_id = r.id 
+                  LEFT JOIN organizers o ON u.id = o.user_id
+                  ORDER BY u.created_at DESC";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function toggleStatus(int $id): bool
+    {
+        $query = "UPDATE users SET is_active = NOT is_active WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+    public function toggleOrganizerAcceptance(int $userId): bool
+    {
+        $query = "UPDATE organizers SET is_acceptable = NOT is_acceptable WHERE user_id = :user_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId);
+        return $stmt->execute();
+    }
+
+    public function getGlobalStats(): array
+    {
+        $stats = [];
+
+        $query = "SELECT COUNT(*) FROM users";
+        $stats['total_users'] = $this->db->query($query)->fetchColumn();
+
+        $query = "SELECT COUNT(*) FROM organizers";
+        $stats['total_organizers'] = $this->db->query($query)->fetchColumn();
+
+        $query = "SELECT COUNT(*) FROM users WHERE is_active = 1";
+        $stats['active_users'] = $this->db->query($query)->fetchColumn();
+
+        return $stats;
+    }
 }
