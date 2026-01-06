@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../config/App.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 header('Content-Type: application/json');
 
 if (!Auth::isAuthenticated()) {
@@ -48,6 +51,8 @@ $db = Database::getInstance()->getConnection();
 $db->beginTransaction();
 
 try {
+    $createdTickets = [];
+
     foreach ($requestedSeats as $seatNum) {
         $seatNum = trim($seatNum);
         // Find or Create Seat
@@ -79,18 +84,28 @@ try {
             'status' => 'VALID'
         ];
 
-        if (!$ticketRepo->create($ticketData)) {
+        $ticket = $ticketRepo->create($ticketData);
+        if (!$ticket) {
             throw new Exception("Failed to create ticket for seat $seatNum");
         }
+        $createdTickets[] = $ticket;
     }
+
 
     $db->commit();
 
-   
+    //  Email Sending
+    $emailSent = false;
+    $userRepo = new UserRepository();
+    $user = $userRepo->find($_SESSION['user_id']);
+    if ($user) {
+        $emailSent = MailService::sendTicket($user, $createdTickets);
+    }
 
-    echo json_encode(['success' => true, 'message' => 'Booking successful!']);
+    echo json_encode(['success' => true, 'message' => 'Booking successful!', "emailSent" => $emailSent]);
 } catch (Exception $e) {
     $db->rollBack();
+    Logger::log($e->getMessage(), "ERROR");
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
 exit;
