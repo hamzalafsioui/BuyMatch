@@ -10,18 +10,18 @@ class MatchRepository extends BaseRepository
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ? new MatchEntity(
-            $data['id'],
-            $data['organizer_id'],
-            $data['home_team_id'],
-            $data['away_team_id'],
-            $data['venue_id'],
+            (int)$data['id'],
+            (int)$data['organizer_id'],
+            (int)$data['home_team_id'],
+            (int)$data['away_team_id'],
+            (int)$data['venue_id'],
             $data['match_datetime'],
-            $data['duration_min'] ?? 90,
-            $data['total_seats'],
+            (int)($data['duration_min'] ?? 90),
+            (int)$data['total_seats'],
             (float)($data['ticket_price'] ?? 0),
             $data['status'] ?? 'DRAFT',
             $data['request_status'] ?? 'PENDING',
-            $data['avg_rating'] ?? 0,
+            (float)($data['avg_rating'] ?? 0),
             $data['created_at']
         ) : null;
     }
@@ -42,27 +42,16 @@ class MatchRepository extends BaseRepository
 
         $matches = [];
         foreach ($rows as $row) {
-            $matches[] = new MatchEntity(
-                $row['id'],
-                $row['organizer_id'],
-                $row['home_team_id'],
-                $row['away_team_id'],
-                $row['venue_id'],
+            $matches[] = new MatchDetailsDTO(
+                (int)$row['id'],
+                $row['home_team_name'],
+                $row['home_team_logo'] ?? '',
+                $row['away_team_name'],
+                $row['away_team_logo'] ?? '',
+                $row['venue_name'],
+                $row['venue_city'],
                 $row['match_datetime'],
-                $row['duration_min'] ?? 90,
-                $row['total_seats'],
-                (float)($row['ticket_price'] ?? 0),
-                $row['status'] ?? 'DRAFT',
-                $row['request_status'] ?? 'PENDING',
-                $row['avg_rating'] ?? 0,
-                $row['created_at'],
-                // Joined fields
-                $row['home_team_name'] ?? null,
-                $row['home_team_logo'] ?? null,
-                $row['away_team_name'] ?? null,
-                $row['away_team_logo'] ?? null,
-                $row['venue_name'] ?? null,
-                $row['venue_city'] ?? null
+                $row['status']
             );
         }
         return $matches;
@@ -90,12 +79,13 @@ class MatchRepository extends BaseRepository
 
     public function findByOrganizer(int $organizerId): array
     {
-        $query = "SELECT m.*, ht.name as home_team_name, at.name as away_team_name, v.name as venue_name
+        $query = "SELECT m.*, ht.name as home_team_name, ht.logo as home_team_logo, at.name as away_team_name, at.logo as away_team_logo, v.name as venue_name, v.city as venue_city
                   FROM matches m
                   JOIN teams ht ON m.home_team_id = ht.id
                   JOIN teams at ON m.away_team_id = at.id
                   JOIN venues v ON m.venue_id = v.id
                   WHERE m.organizer_id = :organizer_id
+                  
                   ORDER BY m.match_datetime DESC";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':organizer_id', $organizerId);
@@ -104,27 +94,16 @@ class MatchRepository extends BaseRepository
 
         $matches = [];
         foreach ($rows as $row) {
-            $matches[] = new MatchEntity(
-                $row['id'],
-                $row['organizer_id'],
-                $row['home_team_id'],
-                $row['away_team_id'],
-                $row['venue_id'],
+            $matches[] = new MatchDetailsDTO(
+                (int)$row['id'],
+                $row['home_team_name'],
+                $row['home_team_logo'],
+                $row['away_team_name'],
+                $row['away_team_logo'],
+                $row['venue_name'],
+                $row['venue_city'],
                 $row['match_datetime'],
-                $row['duration_min'] ?? 90,
-                $row['total_seats'],
-                (float)($row['ticket_price'] ?? 0),
-                $row['status'] ?? 'DRAFT',
-                $row['request_status'] ?? 'PENDING',
-                $row['avg_rating'] ?? 0,
-                $row['created_at'],
-                // Joined fields
-                $row['home_team_name'] ?? null,
-                $row['home_team_logo'] ?? null,
-                $row['away_team_name'] ?? null,
-                $row['away_team_logo'] ?? null,
-                $row['venue_name'] ?? null,
-                $row['venue_city'] ?? null
+                $row['status']
             );
         }
         return $matches;
@@ -135,7 +114,7 @@ class MatchRepository extends BaseRepository
         $stats = [
             'total_matches' => 0,
             'upcoming_matches' => 0,
-            'total_seats_sold' => 0 // Not Implemented Yet
+            'total_seats_sold' => 0 
         ];
 
         // Total Matches
