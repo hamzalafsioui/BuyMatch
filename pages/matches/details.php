@@ -264,22 +264,21 @@ $matchDateTime = new DateTime($match->getMatchDatetime());
                             <div class="flex justify-between items-start mb-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center font-bold text-indigo-400">
-                                        <?php echo $review->getUserId(); // will be change to First letter Name => NOT Implemented Yet
-                                        ?>
+                                        <?php echo substr($review->firstname, 0, 1) . substr($review->lastname, 0, 1); ?>
                                     </div>
                                     <div>
-                                        <p class="font-bold text-white">Fan #<?php echo $review->getUserId(); ?></p>
+                                        <p class="font-bold text-white"><?php echo htmlspecialchars($review->firstname . ' ' . $review->lastname); ?></p>
                                         <div class="flex text-amber-500 text-[10px] gap-0.5">
                                             <?php for ($i = 0; $i < 5; $i++): ?>
-                                                <i class="fa-solid fa-star <?php echo $i < $review->getRating() ? '' : 'opacity-20'; ?>"></i>
+                                                <i class="fa-solid fa-star <?php echo $i < $review->rating ? '' : 'opacity-20'; ?>"></i>
                                             <?php endfor; ?>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="text-[10px] text-slate-500 font-medium uppercase"><?php echo date('M Y', strtotime($review->getCreatedAt())); ?></span>
+                                <span class="text-[10px] text-slate-500 font-medium uppercase"><?php echo date('M Y', strtotime($review->createdAt)); ?></span>
                             </div>
                             <p class="text-slate-300 text-sm italic leading-relaxed">
-                                "<?php echo htmlspecialchars($review->getComment()); ?>"
+                                "<?php echo htmlspecialchars($review->comment); ?>"
                             </p>
                         </div>
                     <?php endforeach; ?>
