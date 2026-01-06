@@ -61,27 +61,27 @@ $tickets = $ticketRepo->findByUserId($userId);
                         <div class="p-8 flex-1">
                             <div class="flex items-center gap-3 mb-6">
                                 <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-bold border border-emerald-500/20">CONFIRMED</span>
-                                <span class="text-slate-500 text-sm">#<?php echo substr((string)$ticket->getId(), 0, 8); ?></span>
+                                <span class="text-slate-500 text-sm">#<?php echo substr((string)$ticket->ticketId, 0, 8); ?></span>
                             </div>
 
                             <div class="flex items-center justify-between gap-8 mb-6">
                                 <div class="text-center md:text-left">
-                                    <h3 class="text-2xl font-black text-white"><?php echo htmlspecialchars($ticket->getHomeTeamName()); ?></h3>
+                                    <h3 class="text-2xl font-black text-white"><?php echo htmlspecialchars($ticket->homeTeamName); ?></h3>
                                 </div>
                                 <div class="text-slate-500 font-bold text-xl">VS</div>
                                 <div class="text-center md:text-right">
-                                    <h3 class="text-2xl font-black text-white"><?php echo htmlspecialchars($ticket->getAwayTeamName()); ?></h3>
+                                    <h3 class="text-2xl font-black text-white"><?php echo htmlspecialchars($ticket->awayTeamName); ?></h3>
                                 </div>
                             </div>
 
                             <div class="flex items-center gap-6 text-slate-400 text-sm">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-regular fa-calendar text-indigo-400"></i>
-                                    <?php echo date('d M Y', strtotime($ticket->getMatchDatetime())); ?>
+                                    <?php echo date('d M Y', strtotime($ticket->matchDatetime)); ?>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <i class="fa-regular fa-clock text-indigo-400"></i>
-                                    <?php echo date('H:i', strtotime($ticket->getMatchDatetime())); ?>
+                                    <?php echo date('H:i', strtotime($ticket->matchDatetime)); ?>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@ $tickets = $ticketRepo->findByUserId($userId);
                             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
                             <!-- Mock QR Code -->
                             <div class="bg-white p-2 rounded-lg mb-2">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($ticket->getQrCode()); ?>" alt="QR" class="w-16 h-16">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($ticket->qrCode); ?>" alt="QR" class="w-16 h-16">
                             </div>
                             <span class="text-indigo-200 text-xs font-mono uppercase">Scan at Gate</span>
                         </div>
