@@ -16,14 +16,6 @@ class MatchEntity
     private $avgRating;
     private $createdAt;
 
-    // Joined fields
-    private $homeTeamName;
-    private $homeTeamLogo;
-    private $awayTeamName;
-    private $awayTeamLogo;
-    private $venueName;
-    private $venueCity;
-
     public function __construct(
         ?int $id = null,
         ?int $organizerId = null,
@@ -37,14 +29,7 @@ class MatchEntity
         string $status = 'DRAFT',
         string $requestStatus = 'PENDING',
         float $avgRating = 0,
-        ?string $createdAt = null,
-        // joined fields
-        ?string $homeTeamName = null,
-        ?string $homeTeamLogo = null,
-        ?string $awayTeamName = null,
-        ?string $awayTeamLogo = null,
-        ?string $venueName = null,
-        ?string $venueCity = null
+        ?string $createdAt = null
     ) {
         $this->id = $id;
         $this->organizerId = $organizerId;
@@ -57,18 +42,9 @@ class MatchEntity
         $this->ticketPrice = $ticketPrice;
         $this->status = $status;
         $this->requestStatus = $requestStatus;
-        $this->avgRating = $avgRating;
         $this->createdAt = $createdAt;
-
-        $this->homeTeamName = $homeTeamName;
-        $this->homeTeamLogo = $homeTeamLogo;
-        $this->awayTeamName = $awayTeamName;
-        $this->awayTeamLogo = $awayTeamLogo;
-        $this->venueName = $venueName;
-        $this->venueCity = $venueCity;
     }
 
-    // Getters
     public function getId()
     {
         return $this->id;
@@ -116,32 +92,6 @@ class MatchEntity
     public function getAvgRating()
     {
         return $this->avgRating;
-    }
-
-    // Joined field getters
-    public function getHomeTeamName()
-    {
-        return $this->homeTeamName;
-    }
-    public function getHomeTeamLogo()
-    {
-        return $this->homeTeamLogo;
-    }
-    public function getAwayTeamName()
-    {
-        return $this->awayTeamName;
-    }
-    public function getAwayTeamLogo()
-    {
-        return $this->awayTeamLogo;
-    }
-    public function getVenueName()
-    {
-        return $this->venueName;
-    }
-    public function getVenueCity()
-    {
-        return $this->venueCity;
     }
 
     public function publish()
