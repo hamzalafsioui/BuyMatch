@@ -195,5 +195,14 @@ class MatchRepository extends BaseRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function updateRequestStatus(int $id, string $status): bool
+    {
+        $query = "UPDATE matches SET request_status = :status WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
     
 }
