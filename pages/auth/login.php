@@ -43,6 +43,7 @@ require_once "../../config/App.php";
         </div>
 
         <form id="loginForm" class="space-y-8">
+            <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($_GET['redirect'] ?? ''); ?>">
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase ml-2 tracking-widest">Email Address</label>
                 <input type="email" name="email" required placeholder="name@example.com"
