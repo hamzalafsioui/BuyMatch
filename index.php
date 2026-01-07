@@ -136,7 +136,7 @@ $matches = $matchRepo->getAllPublished();
                                     $matchCats = $catRepo->findByMatchId($match->matchId);
                                     $minPrice = !empty($matchCats) ? min(array_map(fn($c) => $c->getPrice(), $matchCats)) : 0;
                                     echo number_format($minPrice, 2);
-                                    ?>€ <span class="text-xs text-slate-500 font-normal">/seat</span>
+                                    ?>$ <span class="text-xs text-slate-500 font-normal">/seat</span>
                                 </span>
                                 <a href="pages/matches/details.php?id=<?php echo $match->matchId; ?>" class="px-5 py-2 bg-indigo-600 rounded-xl text-sm font-bold border border-indigo-400 group-hover:bg-white group-hover:text-indigo-600 transition">Book Now</a>
                             </div>
