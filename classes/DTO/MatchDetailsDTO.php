@@ -12,6 +12,7 @@ class MatchDetailsDTO
         public string $venueName,
         public string $venueCity,
         public string $matchDatetime,
-        public string $status
+        public string $status,
+        public string $requestStatus
     ) {}
 }
