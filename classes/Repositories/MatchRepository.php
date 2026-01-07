@@ -51,7 +51,8 @@ class MatchRepository extends BaseRepository
                 $row['venue_name'],
                 $row['venue_city'],
                 $row['match_datetime'],
-                $row['status']
+                $row['status'],
+                $row['request_status']
             );
         }
         return $matches;
@@ -103,7 +104,8 @@ class MatchRepository extends BaseRepository
                 $row['venue_name'],
                 $row['venue_city'],
                 $row['match_datetime'],
-                $row['status']
+                $row['status'],
+                $row['request_status']
             );
         }
         return $matches;
@@ -204,6 +206,21 @@ class MatchRepository extends BaseRepository
         return $stmt->execute();
     }
 
+    public function publishMatch(int $id, int $organizerId): bool
+    {
+        
+        $query = "UPDATE matches 
+                  SET status = 'PUBLISHED' 
+                  WHERE id = :id 
+                  AND organizer_id = :organizer_id 
+                  AND status = 'DRAFT' 
+                  AND request_status = 'APPROVED'";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':organizer_id', $organizerId);
+        return $stmt->execute() && $stmt->rowCount() > 0;
+    }
+
     public function getGlobalStatsForAdmin(): array
     {
         $stats = [];
@@ -219,5 +236,4 @@ class MatchRepository extends BaseRepository
 
         return $stats;
     }
-    
 }
