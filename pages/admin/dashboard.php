@@ -104,7 +104,7 @@ $matchStats = $matchRepo->getGlobalStatsForAdmin();
                     </div>
                     <div>
                         <h3 class="text-slate-400 font-semibold mb-1">Total Revenue</h3>
-                        <p class="text-3xl font-black text-white"><?php echo number_format($matchStats['total_revenue'], 2); ?> DH</p>
+                        <p class="text-3xl font-black text-white"><?php echo number_format($matchStats['total_revenue'], 2); ?> $</p>
                     </div>
                 </div>
             </div>
