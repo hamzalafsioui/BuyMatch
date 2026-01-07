@@ -62,10 +62,10 @@ $requests = $matchRepo->getAllRequests();
                             <div class="flex items-center gap-6 flex-1">
                                 <div class="flex items-center space-x-2">
                                     <div class="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700/50 p-2 hover:scale-105 transition-transform duration-500 overflow-hidden">
-                                        <img src="<?= BASE_URL . "/assets/img/uploads/logos/". $match['home_team_logo']; ?>" alt="<?= $match['home_team_name']; ?>" class="w-full h-full object-contain">
+                                        <img src="<?= BASE_URL . "/assets/img/uploads/logos/" . $match['home_team_logo']; ?>" alt="<?= $match['home_team_name']; ?>" class="w-full h-full object-contain">
                                     </div>
                                     <div class="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700/50 p-2 hover:scale-105 transition-transform duration-500 overflow-hidden relative z-10">
-                                        <img src="<?= BASE_URL .  "/assets/img/uploads/logos/". $match['away_team_logo']; ?>" alt="<?= $match['away_team_name']; ?>" class="w-full h-full object-contain">
+                                        <img src="<?= BASE_URL .  "/assets/img/uploads/logos/" . $match['away_team_logo']; ?>" alt="<?= $match['away_team_name']; ?>" class="w-full h-full object-contain">
                                     </div>
                                 </div>
                                 <div>
@@ -91,6 +91,11 @@ $requests = $matchRepo->getAllRequests();
                                 <form action="<?= BASE_URL; ?>/actions/admin_actions.php" method="POST" class="flex gap-3">
                                     <input type="hidden" name="action" value="update_match_status">
                                     <input type="hidden" name="match_id" value="<?= $match['id']; ?>">
+                                    <button name="status" value="PUBLISHED"
+                                        class="px-6 py-3 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-xl font-bold hover:bg-sky-600 hover:text-white transition-all shadow-lg shadow-sky-500/10">
+                                        <i class="fa-solid fa-paper-plane mr-2"></i>Published
+                                    </button>
+
                                     <button name="status" value="APPROVED" class="px-6 py-3 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl font-bold hover:bg-emerald-600 hover:text-white transition-all shadow-lg shadow-emerald-500/10">
                                         <i class="fa-solid fa-check mr-2"></i>Approve
                                     </button>
@@ -107,7 +112,7 @@ $requests = $matchRepo->getAllRequests();
     </main>
 
     <script>
-        
+
     </script>
 </body>
 
