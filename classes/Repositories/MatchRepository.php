@@ -208,7 +208,7 @@ class MatchRepository extends BaseRepository
 
     public function publishMatch(int $id, int $organizerId): bool
     {
-        
+
         $query = "UPDATE matches 
                   SET status = 'PUBLISHED' 
                   WHERE id = :id 
@@ -220,6 +220,48 @@ class MatchRepository extends BaseRepository
         $stmt->bindParam(':organizer_id', $organizerId);
         return $stmt->execute() && $stmt->rowCount() > 0;
     }
+    public function publishMatchForAdmin(int $id): bool
+    {
+        $match = $this->find($id);
+        if (!$match) {
+            return false;
+        }
+        if ($match->getStatus() === 'PUBLISHED') {
+            return false;
+        }
+
+        $this->db->beginTransaction();
+
+        try {
+
+            $approveStmt = $this->db->prepare(
+                "UPDATE matches 
+             SET request_status = 'APPROVED' 
+             WHERE id = :id"
+            );
+            $approveStmt->bindParam(':id', $id);
+            $approveStmt->execute();
+
+
+            $publishStmt = $this->db->prepare(
+                "UPDATE matches 
+             SET status = 'PUBLISHED' 
+             WHERE id = :id 
+             AND status = 'DRAFT'"
+            );
+            $publishStmt->bindParam(':id', $id);
+            $publishStmt->execute();
+
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            
+            Logger::log($e->getMessage(),"ERROR");
+            return false;
+        }
+    }
+
 
     public function getGlobalStatsForAdmin(): array
     {
