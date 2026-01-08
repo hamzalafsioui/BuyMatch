@@ -15,13 +15,15 @@ class ReviewRepository extends BaseRepository
 
         $reviews = [];
         foreach ($rows as $row) {
-            $reviews[] = new Review(
-                $row['id'],
-                $row['user_id'],
-                $row['match_id'],
-                $row['rating'],
+            $reviews[] = new ReviewDetailsDTO(
+                (int)$row['id'],
+                (int)$row['user_id'],
+                (int)$row['match_id'],
+                (int)$row['rating'],
                 $row['comment'],
-                $row['created_at']
+                $row['created_at'],
+                $row['firstname'],
+                $row['lastname']
             );
         }
         return $reviews;
@@ -38,4 +40,6 @@ class ReviewRepository extends BaseRepository
         $stmt->bindParam(':comment', $data['comment']);
         return $stmt->execute();
     }
+
+   
 }
