@@ -3,6 +3,8 @@ require_once './config/App.php';
 
 $matchRepo = new MatchRepository();
 $matches = $matchRepo->getAllPublished();
+$oldMatches = $matchRepo->getAllFinished();
+
 
 ?>
 <!DOCTYPE html>
@@ -81,12 +83,20 @@ $matches = $matchRepo->getAllPublished();
 
     <!-- Featured Matches -->
     <section id="matchs" class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="flex justify-between items-end mb-12">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
             <div>
                 <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Upcoming Matches</h2>
                 <div class="h-1.5 w-20 bg-indigo-600 rounded-full"></div>
             </div>
-            <a href="#" class="text-indigo-400 font-semibold hover:underline">View All →</a>
+
+            <!-- Filter Bar -->
+            <div class="flex-1 max-w-md w-full relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                <input type="text" id="matchFilter" placeholder="Search by team, venue or city..."
+                    class="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl py-3 pl-12 pr-4 text-white focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-slate-500">
+            </div>
+
+            <a href="#" class="text-indigo-400 font-semibold hover:underline hidden md:block">View All →</a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -97,12 +107,13 @@ $matches = $matchRepo->getAllPublished();
                 </div>
             <?php else: ?>
                 <?php foreach ($matches as $match): ?>
-                    <div class="group bg-slate-800/50 border border-slate-700/50 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="match-card group bg-slate-800/50 border border-slate-700/50 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-all duration-300 transform hover:-translate-y-2"
+                        data-search="<?php echo strtolower($match->homeTeamName . ' ' . $match->awayTeamName . ' ' . $match->venueName . ' ' . $match->venueCity); ?>">
                         <div class="h-48 overflow-hidden relative bg-slate-900 flex items-center justify-center p-4 gap-4">
                             <!-- Logos -->
                             <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
                                 <?php if ($match->homeTeamLogo): ?>
-                                    <img src="assets/img/uploads/logos/<?php echo htmlspecialchars($match->homeTeamLogo); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
+                                    <img src="<?= BASE_URL . '/assets/img/teams/' . htmlspecialchars($match->homeTeamLogo); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
                                 <?php else: ?>
                                     <span class="font-bold text-xl"><?php echo substr($match->homeTeamName, 0, 1); ?></span>
                                 <?php endif; ?>
@@ -110,7 +121,7 @@ $matches = $matchRepo->getAllPublished();
                             <span class="text-xl font-bold text-slate-500">VS</span>
                             <div class="w-20 h-20 rounded-full bg-white/10 p-2 flex items-center justify-center">
                                 <?php if ($match->awayTeamLogo): ?>
-                                    <img src="./assets/img/uploads/logos/<?php echo htmlspecialchars($match->awayTeamLogo); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
+                                    <img src="<?= BASE_URL . '/assets/img/teams/' . htmlspecialchars($match->awayTeamLogo); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
                                 <?php else: ?>
                                     <span class="font-bold text-xl"><?php echo substr($match->awayTeamName, 0, 1); ?></span>
                                 <?php endif; ?>
@@ -146,6 +157,238 @@ $matches = $matchRepo->getAllPublished();
             <?php endif; ?>
         </div>
     </section>
+
+    <!-- Old Matches Section -->
+    <?php if (!empty($oldMatches)): ?>
+        <section class="py-24 px-6 max-w-7xl mx-auto border-t border-slate-800/50">
+            <div class="mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4 opacity-70">Old Matches</h2>
+                <div class="h-1.5 w-20 bg-slate-600 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <?php foreach ($oldMatches as $match): ?>
+                    <div class="bg-slate-800/20 border border-slate-800/50 rounded-2xl p-6 grayscale transition-all hover:grayscale-0 hover:bg-slate-800/30">
+                        <div class="flex flex-col gap-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Finished</span>
+                                <span class="text-[10px] text-slate-600 font-bold"><?php echo date('d M Y', strtotime($match->matchDatetime)); ?></span>
+                            </div>
+                            <div class="flex items-center justify-center gap-4 py-2">
+                                <?php if ($match->homeTeamLogo): ?>
+                                    <img src="<?= BASE_URL . '/assets/img/teams/' . htmlspecialchars($match->homeTeamLogo); ?>" class="w-10 h-10 object-contain" alt="Home">
+                                <?php endif; ?>
+                                <span class="text-xs font-bold text-slate-600">VS</span>
+                                <?php if ($match->awayTeamLogo): ?>
+                                    <img src="<?= BASE_URL . '/assets/img/teams/' . htmlspecialchars($match->awayTeamLogo); ?>" class="w-10 h-10 object-contain" alt="Away">
+                                <?php endif; ?>
+                            </div>
+                            <h3 class="text-center font-bold text-slate-400 text-sm">
+                                <?php echo htmlspecialchars($match->homeTeamName); ?> vs <?php echo htmlspecialchars($match->awayTeamName); ?>
+                            </h3>
+                            <div class="text-center text-[11px] text-slate-600 mb-4">
+                                <i class="fa-solid fa-location-dot mr-1"></i> <?php echo htmlspecialchars($match->venueName); ?>
+                            </div>
+                            <button onclick="openReviewModal(<?= $match->matchId ?>)" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-comments"></i> Reviews
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    <?php endif; ?>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeReviewModal()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-lg bg-[#0f172a] border-l border-slate-800 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300" id="reviewPanel">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Match Reviews</h2>
+                <button onclick="closeReviewModal()" class="text-slate-500 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Reviews Content -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6" id="reviewsContainer">
+                <div class="flex items-center justify-center h-40">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-500"></i>
+                </div>
+            </div>
+
+            <!-- Add Review Form (Hidden by default) -->
+            <div id="addReviewSection" class="p-6 border-t border-slate-800 bg-slate-900/30 hidden">
+                <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-widest">Add Your Review</h3>
+                <form id="addReviewForm" class="space-y-4">
+                    <input type="hidden" name="match_id" id="modalMatchId">
+                    <div class="flex gap-2" id="starSelection">
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <i class="fa-solid fa-star text-2xl cursor-pointer text-slate-700 hover:text-amber-400 transition-colors" data-value="<?= $i ?>"></i>
+                        <?php endfor; ?>
+                    </div>
+                    <textarea name="comment" required placeholder="Write your feedback..."
+                        class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-4 text-white text-sm focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-slate-600 resize-none h-24"></textarea>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                        Submit Review
+                    </button>
+                </form>
+            </div>
+            <div id="loginToReview" class="p-6 border-t border-slate-800 bg-slate-900/30 text-center hidden">
+                <p class="text-slate-500 text-sm mb-4">You need to have attended this match to leave a review.</p>
+                <a href="pages/auth/login.php" class="inline-block text-indigo-400 font-bold hover:underline">Sign in to share your experience</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Match filtering
+        document.getElementById('matchFilter').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.match-card');
+
+            cards.forEach(card => {
+                const searchData = card.getAttribute('data-search');
+                if (searchData.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Review Modal Logic
+        const modal = document.getElementById('reviewModal');
+        const panel = document.getElementById('reviewPanel');
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const addReviewSection = document.getElementById('addReviewSection');
+        const loginToReview = document.getElementById('loginToReview');
+        const addReviewForm = document.getElementById('addReviewForm');
+        let selectedRating = 0;
+
+        async function openReviewModal(matchId) {
+            document.getElementById('modalMatchId').value = matchId;
+            modal.classList.remove('hidden');
+            setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+
+            reviewsContainer.innerHTML = '<div class="flex items-center justify-center h-40"><i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-500"></i></div>';
+            addReviewSection.classList.add('hidden');
+            loginToReview.classList.add('hidden');
+
+            try {
+                const response = await fetch(`actions/matches/get_reviews.action.php?match_id=${matchId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    renderReviews(data.reviews);
+                    if (data.can_review) {
+                        addReviewSection.classList.remove('hidden');
+                    } else if (!data.is_logged_in) {
+                        loginToReview.classList.remove('hidden');
+                    }
+                }
+            } catch (error) {
+                reviewsContainer.innerHTML = '<p class="text-red-400 text-center">Failed to load reviews.</p>';
+            }
+        }
+
+        function renderReviews(reviews) {
+            if (reviews.length === 0) {
+                reviewsContainer.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fa-solid fa-comment-slash text-4xl text-slate-800 mb-4"></i>
+                        <p class="text-slate-500">No reviews yet for this match.</p>
+                    </div>`;
+                return;
+            }
+
+            reviewsContainer.innerHTML = reviews.map(rev => `
+                <div class="bg-slate-800/20 border border-slate-800/50 rounded-2xl p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="font-bold text-white block text-sm">${rev.username}</span>
+                            <span class="text-[10px] text-slate-500">${rev.date}</span>
+                        </div>
+                        <div class="flex text-amber-400 text-[10px]">
+                            ${Array(5).fill(0).map((_, i) => `<i class="fa-solid fa-star ${i < rev.rating ? '' : 'text-slate-700'}"></i>`).join('')}
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">${rev.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        function closeReviewModal() {
+            panel.classList.add('translate-x-full');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+            resetForm();
+        }
+
+        function resetForm() {
+            addReviewForm.reset();
+            selectedRating = 0;
+            updateStars(0);
+        }
+
+        // Star selection
+        document.querySelectorAll('#starSelection i').forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.dataset.value);
+                updateStars(selectedRating);
+            });
+            star.addEventListener('mouseenter', () => updateStars(parseInt(star.dataset.value)));
+            star.addEventListener('mouseleave', () => updateStars(selectedRating));
+        });
+
+        function updateStars(val) {
+            document.querySelectorAll('#starSelection i').forEach((s, i) => {
+                if (i < val) {
+                    s.classList.remove('text-slate-700');
+                    s.classList.add('text-amber-400');
+                } else {
+                    s.classList.remove('text-amber-400');
+                    s.classList.add('text-slate-700');
+                }
+            });
+        }
+
+        addReviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (selectedRating === 0) return alert('Please select a rating');
+
+            const matchId = document.getElementById('modalMatchId').value;
+            const comment = addReviewForm.comment.value;
+            const btn = addReviewForm.querySelector('button');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+            try {
+                const response = await fetch('actions/matches/review.action.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        match_id: matchId,
+                        rating: selectedRating,
+                        comment: comment
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    openReviewModal(matchId); // Refresh reviews
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('Connection error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Review';
+            }
+        });
+    </script>
 
     <footer class="border-t border-slate-800 bg-[#070b14] py-12 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
