@@ -5,6 +5,7 @@ $isDashboard = strpos($currentPage, 'dashboard.php') !== false;
 $isUsers     = strpos($currentPage, 'users.php') !== false;
 $isMatches   = strpos($currentPage, 'matches.php') !== false;
 $isReviews   = strpos($currentPage, 'reviews.php') !== false;
+$isTeams     = strpos($currentPage, 'pages/admin/teams') !== false;
 $isProfile   = strpos($currentPage, "pages/profile.php") !== false;
 
 ?>
@@ -71,6 +72,17 @@ $isProfile   = strpos($currentPage, "pages/profile.php") !== false;
             <?= $isReviews ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
 
             <span>Reviews</span>
+        </a>
+
+        <!-- Teams -->
+        <a href="<?= BASE_URL; ?>/pages/admin/teams/index.php"
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+           <?= $isTeams ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+
+            <i class="fa-solid fa-people-group w-6 text-center transition-transform group-hover:scale-110
+            <?= $isTeams ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
+
+            <span>Teams</span>
         </a>
 
         <!-- Section -->
