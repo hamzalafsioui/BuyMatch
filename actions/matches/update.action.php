@@ -34,6 +34,11 @@ if (!$match || $match->getOrganizerId() != $_SESSION['user_id']) {
     exit;
 }
 
+if ($match->getStatus() === 'FINISHED') {
+    echo json_encode(['success' => false, 'message' => 'Cannot update a match that has already finished']);
+    exit;
+}
+
 $homeTeamId = $_POST['home_team_id'] ?? null;
 $awayTeamId = $_POST['away_team_id'] ?? null;
 $venueId = $_POST['venue_id'] ?? null;
@@ -67,7 +72,7 @@ $data = [
 if ($matchRepo->update($matchId, $data)) {
     $catRepo = new SeatCategoryRepository();
 
-    
+
     $currentStoredCats = $catRepo->findByMatchId($matchId);
     $currentStoredIds = array_map(fn($c) => (int)$c->getId(), $currentStoredCats);
 
@@ -99,7 +104,6 @@ if ($matchRepo->update($matchId, $data)) {
             try {
                 $catRepo->delete($exId);
             } catch (PDOException $e) {
-                
             }
         }
     }
