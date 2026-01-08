@@ -41,5 +41,24 @@ class ReviewRepository extends BaseRepository
         return $stmt->execute();
     }
 
-   
+    public function getAllForAdmin(): array
+    {
+        $query = "SELECT r.*, u.firstname, u.lastname, ht.name as home_team, at.name as away_team
+                  FROM reviews r 
+                  JOIN users u ON r.user_id = u.id 
+                  JOIN matches m ON r.match_id = m.id
+                  JOIN teams ht ON m.home_team_id = ht.id
+                  JOIN teams at ON m.away_team_id = at.id
+                  ORDER BY r.created_at DESC";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function delete(int $id): bool
+    {
+        $query = "DELETE FROM reviews WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }
