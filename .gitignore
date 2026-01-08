@@ -1,0 +1,6 @@
+#imgs
+assets/img/uploads/
+
+#logs
+logs/
+logs/*.log
