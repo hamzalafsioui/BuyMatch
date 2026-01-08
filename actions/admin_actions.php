@@ -50,7 +50,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-   
+    /* =================== DELETE REVIEW =================== */
+    elseif ($action === 'delete_review') {
+        $reviewId = (int)($_POST['review_id'] ?? 0);
+        if ($reviewId) {
+            $reviewRepo = new ReviewRepository();
+            if ($reviewRepo->delete($reviewId)) {
+                header('Location: ' . BASE_URL . '/pages/admin/reviews.php?msg=Review deleted');
+                exit;
+            } else {
+                header('Location: ' . BASE_URL . '/pages/admin/reviews.php?error=Failed to delete review');
+                exit;
+            }
+        }
+    }
 
     /* =================== TOGGLE ORGANIZER ACCEPTANCE =================== */
     elseif ($action === 'toggle_organizer_acceptance') {
