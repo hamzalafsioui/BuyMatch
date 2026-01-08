@@ -37,6 +37,12 @@ if (!$match || $match->getOrganizerId() != $_SESSION['user_id']) {
     exit;
 }
 
+// Cannot delete a match that has already finished
+if ($match->getStatus() === 'FINISHED') {
+    echo json_encode(['success' => false, 'message' => 'Cannot delete a match that has already finished']);
+    exit;
+}
+
 
 
 if ($matchRepo->delete($matchId)) {
