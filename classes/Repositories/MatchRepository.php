@@ -58,6 +58,38 @@ class MatchRepository extends BaseRepository
         return $matches;
     }
 
+    public function getAllFinished(): array
+    {
+        $query = "SELECT m.*, ht.name as home_team_name, ht.logo as home_team_logo, 
+                         at.name as away_team_name, at.logo as away_team_logo,
+                         v.name as venue_name, v.city as venue_city
+                  FROM matches m
+                  JOIN teams ht ON m.home_team_id = ht.id
+                  JOIN teams at ON m.away_team_id = at.id
+                  JOIN venues v ON m.venue_id = v.id
+                  WHERE m.status = 'FINISHED'
+                  ORDER BY m.match_datetime DESC";
+        $stmt = $this->db->query($query);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $matches = [];
+        foreach ($rows as $row) {
+            $matches[] = new MatchDetailsDTO(
+                (int)$row['id'],
+                $row['home_team_name'],
+                $row['home_team_logo'] ?? '',
+                $row['away_team_name'],
+                $row['away_team_logo'] ?? '',
+                $row['venue_name'],
+                $row['venue_city'],
+                $row['match_datetime'],
+                $row['status'],
+                $row['request_status']
+            );
+        }
+        return $matches;
+    }
+
     public function create(array $data): bool
     {
         $query = "INSERT INTO matches (organizer_id, home_team_id, away_team_id, venue_id, match_datetime, duration_min, total_seats, ticket_price, status, request_status) 
@@ -256,8 +288,8 @@ class MatchRepository extends BaseRepository
             return true;
         } catch (PDOException $e) {
             $this->db->rollBack();
-            
-            Logger::log($e->getMessage(),"ERROR");
+
+            Logger::log($e->getMessage(), "ERROR");
             return false;
         }
     }
