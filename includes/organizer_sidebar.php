@@ -5,6 +5,8 @@ $currentPage = $_SERVER['PHP_SELF'];
 $isDashboard   = strpos($currentPage, 'dashboard.php') !== false;
 $isMatches     = strpos($currentPage, 'matches/index.php') !== false;
 $isCreateMatch = strpos($currentPage, 'matches/create.php') !== false;
+$isTeams       = strpos($currentPage, 'teams/index.php') !== false;
+$isCreateTeam  = strpos($currentPage, 'teams/create.php') !== false;
 $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
 ?>
@@ -60,6 +62,28 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
             <?= $isCreateMatch ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
 
             <span>Create Match</span>
+        </a>
+
+        <!-- Teams Management -->
+        <a href="<?= BASE_URL; ?>/pages/organizer/teams/index.php"
+           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+           <?= $isTeams ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+
+            <i class="fa-solid fa-users w-6 text-center transition-transform group-hover:scale-110
+            <?= $isTeams ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
+
+            <span>Teams</span>
+        </a>
+
+        <!-- Create Team -->
+        <a href="<?= BASE_URL; ?>/pages/organizer/teams/create.php"
+           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+           <?= $isCreateTeam ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+
+            <i class="fa-solid fa-user-plus w-6 text-center transition-transform group-hover:scale-110
+            <?= $isCreateTeam ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
+
+            <span>Create Team</span>
         </a>
 
         <!-- Section -->
