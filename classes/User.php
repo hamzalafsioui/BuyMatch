@@ -104,4 +104,9 @@ abstract class User
     {
         $this->isActive = $isActive;
     }
+
+    public function isAcceptable(): bool
+    {
+        return true;
+    }
 }
