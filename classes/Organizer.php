@@ -54,12 +54,12 @@ class Organizer extends User
         return $this->bio;
     }
     public function getImgLogo()
-{
-    return $this->logo;
-}
-    public function isAcceptable()
     {
-        return $this->isAcceptable;
+        return $this->logo;
+    }
+    public function isAcceptable(): bool
+    {
+        return (bool)$this->isAcceptable;
     }
 
     public function setCompanyName($name)
