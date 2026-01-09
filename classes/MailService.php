@@ -19,7 +19,13 @@ class MailService implements IMailService
             $mail->addAddress($user->getEmail());
             $mail->isHTML(true);
             $mail->Subject = $subject;
-            $mail->Body = "<p>[" . date('Y-m-d H:i:s') . "] EMAIL TO $to: $subject. Attached $count tickets.</p>";
+            $mail->Body = "<p>Dear " . htmlspecialchars($user->getFirstname()) . ",</p>" .
+                "<p>Thank you for your purchase. Please find your match tickets attached as a PDF.</p>" .
+                "<p>Best regards,<br>BuyMatch Team</p>";
+
+            // Generate and attach PDF
+            $pdfContent = PDFService::generateTicketsPDF($tickets);
+            $mail->addStringAttachment($pdfContent, 'tickets.pdf');
 
             $mail->send();
             $success = true;
