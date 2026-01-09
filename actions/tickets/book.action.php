@@ -48,8 +48,8 @@ if (($existingCount + $qty) > 4) {
 
 // Check Limit places (MAX 2000);
 $existingPlaceCount = $seatRepo->countByMatchId($matchId);
-if($existingPlaceCount >2000){
-    echo json_encode(['success'=>false,'message'=>  "The maximum number of seats for this match (2000) has been reached."]);
+if ($existingPlaceCount > 2000) {
+    echo json_encode(['success' => false, 'message' =>  "The maximum number of seats for this match (2000) has been reached."]);
     exit;
 }
 
@@ -91,11 +91,11 @@ try {
             'status' => 'VALID'
         ];
 
-        $ticket = $ticketRepo->create($ticketData);
-        if (!$ticket) {
+        $ticketId = $ticketRepo->create($ticketData);
+        if (!$ticketId) {
             throw new Exception("Failed to create ticket for seat $seatNum");
         }
-        $createdTickets[] = $ticket;
+        $createdTickets[] = $ticketId;
     }
 
 
@@ -106,7 +106,14 @@ try {
     $userRepo = new UserRepository();
     $user = $userRepo->find($_SESSION['user_id']);
     if ($user) {
-        $emailSent = MailService::sendTicket($user, $createdTickets);
+        $ticketDtos = [];
+        foreach ($createdTickets as $tId) {
+            $dto = $ticketRepo->findDetails((int)$tId);
+            if ($dto) {
+                $ticketDtos[] = $dto;
+            }
+        }
+        $emailSent = MailService::sendTicket($user, $ticketDtos);
     }
 
     echo json_encode(['success' => true, 'message' => 'Booking successful!', "emailSent" => $emailSent]);
