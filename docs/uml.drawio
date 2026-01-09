@@ -1,10 +1,10 @@
 <mxfile host="65bd71144e">
     <diagram id="BuyMatchDiagram" name="Class Diagram">
-        <mxGraphModel dx="1593" dy="427" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1321" dy="275" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="User" value="User&#xa;--&#xa;+ Id: int&#xa;+ RoleId: int&#xa;+ Firstname: string&#xa;+ Lastname: string&#xa;+ Email: string&#xa;+ Password: string&#xa;+ Phone: string&#xa;+ ImgPath: string&#xa;+ IsActive: bool&#xa;+ CreatedAt: DateTime&#xa;--&#xa;+ isAcceptable(): bool" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=1;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                <mxCell id="User" value="User &amp;lt;&amp;lt;Abstract&amp;gt;&amp;gt;&lt;br&gt;--&lt;br&gt;+ Id: int&lt;br&gt;+ RoleId: int&lt;br&gt;+ Firstname: string&lt;br&gt;+ Lastname: string&lt;br&gt;+ Email: string&lt;br&gt;+ Password: string&lt;br&gt;+ Phone: string&lt;br&gt;+ ImgPath: string&lt;br&gt;+ IsActive: bool&lt;br&gt;+ CreatedAt: DateTime&lt;br&gt;--&lt;br&gt;+ isAcceptable(): bool" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=1;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="320" y="40" width="180" height="230" as="geometry"/>
                 </mxCell>
                 <mxCell id="Organizer" value="Organizer&#xa;--&#xa;+ CompanyName: string&#xa;+ Logo: string&#xa;+ Bio: string&#xa;+ IsAcceptable: bool&#xa;--&#xa;+ isAcceptable(): bool" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=1;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
