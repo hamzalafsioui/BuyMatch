@@ -149,3 +149,14 @@ CREATE TABLE reviews (
     FOREIGN KEY (match_id) REFERENCES matches(id),
     UNIQUE (user_id, match_id)
 );
+
+/* =========================== EVENT update_finished_matches =========================== */
+
+CREATE EVENT IF NOT EXISTS update_finished_matches
+ON SCHEDULE EVERY 2 MINUTE
+ON COMPLETION PRESERVE
+DO
+UPDATE matches
+SET status = 'FINISHED'
+WHERE status = 'PUBLISHED'
+  AND ADDTIME(match_datetime, SEC_TO_TIME(duration_min * 60)) < NOW();
