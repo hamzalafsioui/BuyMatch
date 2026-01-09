@@ -26,15 +26,21 @@ if (Auth::login($email, $password)) {
         $decodedRedirect = urldecode($redirectionPara);
 
         // check is starts with BASE_URL or /
-        if (str_starts_with($decodedRedirect, 'http') 
-            || 
-        str_starts_with($decodedRedirect, "/")) {
+        if (
+            str_starts_with($decodedRedirect, 'http')
+            ||
+            str_starts_with($decodedRedirect, "/")
+        ) {
             $redirect = $decodedRedirect;
-        } 
+        }
     } else {
         if ($currentUser) {
             if ($currentUser->getRoleId() == 2) { // Organizer
-                $redirect = BASE_URL . '/pages/organizer/dashboard.php';
+                if (!$currentUser->isAcceptable()) {
+                    $redirect = BASE_URL . '/pages/auth/pending_approval.php';
+                } else {
+                    $redirect = BASE_URL . '/pages/organizer/dashboard.php';
+                }
             } elseif ($currentUser->getRoleId() == 3) { // Admin
                 $redirect = BASE_URL . '/pages/admin/dashboard.php';
             }
