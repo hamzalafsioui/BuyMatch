@@ -7,11 +7,14 @@ $isMatches     = strpos($currentPage, 'matches/index.php') !== false;
 $isCreateMatch = strpos($currentPage, 'matches/create.php') !== false;
 $isTeams       = strpos($currentPage, 'teams/index.php') !== false;
 $isCreateTeam  = strpos($currentPage, 'teams/create.php') !== false;
-$isProfile = strpos($currentPage,"pages/profile.php") !== false;
+$isVenues      = strpos($currentPage, 'venues/index.php') !== false;
+$isCreateVenue = strpos($currentPage, 'venues/create.php') !== false;
+$isProfile = strpos($currentPage, "pages/profile.php") !== false;
 
 ?>
 
-<aside class="fixed left-0 top-0 h-screen w-64 glass border-r border-slate-700/50 p-6 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0" id="sidebar">
+
+<aside class="fixed left-0 top-0 h-screen w-64 glass border-r border-slate-700/50 p-6 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0 overflow-y-auto" id="sidebar">
 
     <!-- Logo -->
     <div class="mb-10 flex items-center gap-3 px-2">
@@ -28,7 +31,7 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
         <!-- Dashboard -->
         <a href="<?= BASE_URL; ?>/pages/organizer/dashboard.php"
-           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
            <?= $isDashboard ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
 
             <i class="fa-solid fa-chart-pie w-6 text-center transition-transform group-hover:scale-110
@@ -44,7 +47,7 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
         <!-- My Matches -->
         <a href="<?= BASE_URL; ?>/pages/organizer/matches/index.php"
-           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
            <?= $isMatches ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
 
             <i class="fa-solid fa-futbol w-6 text-center transition-transform group-hover:scale-110
@@ -55,7 +58,7 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
         <!-- Create Match -->
         <a href="<?= BASE_URL; ?>/pages/organizer/matches/create.php"
-           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
            <?= $isCreateMatch ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
 
             <i class="fa-solid fa-plus w-6 text-center transition-transform group-hover:scale-110
@@ -66,7 +69,7 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
         <!-- Teams Management -->
         <a href="<?= BASE_URL; ?>/pages/organizer/teams/index.php"
-           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
            <?= $isTeams ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
 
             <i class="fa-solid fa-users w-6 text-center transition-transform group-hover:scale-110
@@ -77,13 +80,35 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
         <!-- Create Team -->
         <a href="<?= BASE_URL; ?>/pages/organizer/teams/create.php"
-           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
            <?= $isCreateTeam ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
 
             <i class="fa-solid fa-user-plus w-6 text-center transition-transform group-hover:scale-110
             <?= $isCreateTeam ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
 
             <span>Create Team</span>
+        </a>
+
+        <!-- Venues Management -->
+        <a href="<?= BASE_URL; ?>/pages/organizer/venues/index.php"
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+           <?= $isVenues ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+
+            <i class="fa-solid fa-location-dot w-6 text-center transition-transform group-hover:scale-110
+            <?= $isVenues ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
+
+            <span>Venues</span>
+        </a>
+
+        <!-- Create Venue -->
+        <a href="<?= BASE_URL; ?>/pages/organizer/venues/create.php"
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+           <?= $isCreateVenue ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+
+            <i class="fa-solid fa-map-location-dot w-6 text-center transition-transform group-hover:scale-110
+            <?= $isCreateVenue ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
+
+            <span>Create Venue</span>
         </a>
 
         <!-- Section -->
@@ -93,8 +118,8 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
         <!-- Profile -->
         <a href="<?= BASE_URL; ?>/pages/profile.php"
-           class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl  hover:bg-slate-800/50 transition-all group
-           <?= $isProfile? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl  hover:bg-slate-800/50 transition-all group
+           <?= $isProfile ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
 
             <i class="fa-solid fa-user-gear w-6 text-center transition-transform group-hover:scale-110
              <?= $isProfile ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
@@ -106,7 +131,7 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
     <!-- Logout -->
     <div class="pt-4 border-t border-slate-700/30">
         <a href="<?= BASE_URL; ?>/actions/Auth/logout.action.php"
-           class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all group">
+            class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all group">
 
             <i class="fa-solid fa-right-from-bracket w-6 text-center transition-transform group-hover:scale-110"></i>
             <span>Log Out</span>
@@ -116,5 +141,5 @@ $isProfile = strpos($currentPage,"pages/profile.php") !== false;
 
 <!-- Mobile Overlay -->
 <div id="sidebar-overlay"
-     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden opacity-0 transition-opacity">
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden opacity-0 transition-opacity">
 </div>
