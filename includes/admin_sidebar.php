@@ -6,11 +6,12 @@ $isUsers     = strpos($currentPage, 'users.php') !== false;
 $isMatches   = strpos($currentPage, 'matches.php') !== false;
 $isReviews   = strpos($currentPage, 'reviews.php') !== false;
 $isTeams     = strpos($currentPage, 'pages/admin/teams') !== false;
+$isVenues    = strpos($currentPage, 'pages/organizer/venues') !== false;
 $isProfile   = strpos($currentPage, "pages/profile.php") !== false;
 
 ?>
 
-<aside class="fixed left-0 top-0 h-screen w-64 glass border-r border-slate-700/50 p-6 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0" id="sidebar">
+<aside class="fixed left-0 top-0 h-screen w-64 glass border-r border-slate-700/50 p-6 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0 " id="sidebar">
 
     <!-- Logo -->
     <div class="mb-10 flex items-center gap-3 px-2">
@@ -83,6 +84,17 @@ $isProfile   = strpos($currentPage, "pages/profile.php") !== false;
             <?= $isTeams ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
 
             <span>Teams</span>
+        </a>
+
+        <!-- Venues -->
+        <a href="<?= BASE_URL; ?>/pages/organizer/venues/index.php"
+            class="nav-item flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all group
+           <?= $isVenues ? 'bg-indigo-600/10 text-indigo-400 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'; ?>">
+
+            <i class="fa-solid fa-location-dot w-6 text-center transition-transform group-hover:scale-110
+            <?= $isVenues ? 'text-indigo-400' : 'text-slate-500'; ?>"></i>
+
+            <span>Venues</span>
         </a>
 
         <!-- Section -->
