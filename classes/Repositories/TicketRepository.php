@@ -22,7 +22,7 @@ class TicketRepository extends BaseRepository
             $row['purchase_time']
         ) : null;
     }
-    
+
     public function findDetails(int $id): ?TicketDetailsDTO
     {
         $query = "
@@ -112,7 +112,7 @@ class TicketRepository extends BaseRepository
         return (int)$stmt->fetchColumn();
     }
 
-    public function create(array $data): bool
+    public function create(array $data): int|bool
     {
         $query = "INSERT INTO tickets (user_id, match_id, seat_id, price_paid, qr_code, status) 
                   VALUES (:user_id, :match_id, :seat_id, :price_paid, :qr_code, :status)";
@@ -123,6 +123,10 @@ class TicketRepository extends BaseRepository
         $stmt->bindParam(':price_paid', $data['price_paid']);
         $stmt->bindParam(':qr_code', $data['qr_code']);
         $stmt->bindParam(':status', $data['status']);
-        return $stmt->execute();
+
+        if ($stmt->execute()) {
+            return (int)$this->db->lastInsertId();
+        }
+        return false;
     }
 }
