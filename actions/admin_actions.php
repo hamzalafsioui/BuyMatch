@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    /* =================== UPDATE MATCH STATUS =================== */
+    /* =================== UPDATE MATCH STATUS =================== */ 
     elseif ($action === 'update_match_status') {
         $matchId = (int)($_POST['match_id'] ?? 0);
         $status = $_POST['status'] ?? '';
@@ -36,13 +36,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $matchRepo = new MatchRepository();
+        $match = $matchRepo->find($matchId);
+
+        if (!$match) {
+            die('Match not found');
+        }
+
+        if ($match->getStatus() === 'FINISHED') {
+            die('Cannot update status of a finished match');
+        }
 
         if ($status === 'PUBLISHED') {
             // $matchRepo->updateRequestStatus($matchId, 'APPROVED');
-            
+
             $matchRepo->publishMatchForAdmin($matchId);
         } else {
-            
+
             $matchRepo->updateRequestStatus($matchId, $status);
         }
 
@@ -50,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    /* =================== DELETE REVIEW =================== */
+    /* =================== DELETE REVIEW =================== */ 
     elseif ($action === 'delete_review') {
         $reviewId = (int)($_POST['review_id'] ?? 0);
         if ($reviewId) {
@@ -66,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     /* =================== TOGGLE ORGANIZER ACCEPTANCE =================== */
-    elseif ($action === 'toggle_organizer_acceptance') {
+     elseif ($action === 'toggle_organizer_acceptance') {
         $userId = (int)($_POST['user_id'] ?? 0);
         if ($userId) {
             $userRepo = new UserRepository();
