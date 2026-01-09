@@ -89,7 +89,7 @@ $matchDateTime = new DateTime($match->getMatchDatetime());
                 <div class="flex flex-col items-center gap-4">
                     <div class="w-24 h-24 md:w-32 md:h-32 bg-white/10 rounded-full p-4 flex items-center justify-center backdrop-blur-sm border border-white/10">
                         <?php if ($homeTeam->getLogo()): ?>
-                            <img src="../../assets/img/uploads/logos/<?php echo htmlspecialchars($homeTeam->getLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
+                            <img src="<?= BASE_URL . '/assets/img/teams/' . htmlspecialchars($homeTeam->getLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Home">
                         <?php else: ?>
                             <span class="text-4xl font-black"><?php echo substr($homeTeam->getName(), 0, 1); ?></span>
                         <?php endif; ?>
@@ -109,7 +109,7 @@ $matchDateTime = new DateTime($match->getMatchDatetime());
                 <div class="flex flex-col items-center gap-4">
                     <div class="w-24 h-24 md:w-32 md:h-32 bg-white/10 rounded-full p-4 flex items-center justify-center backdrop-blur-sm border border-white/10">
                         <?php if ($awayTeam->getLogo()): ?>
-                            <img src="../../assets/img/uploads/logos/<?php echo htmlspecialchars($awayTeam->getLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
+                            <img src="<?= BASE_URL . '/assets/img/teams/' . htmlspecialchars($awayTeam->getLogo()); ?>" class="w-full h-full object-contain rounded-full" alt="Away">
                         <?php else: ?>
                             <span class="text-4xl font-black"><?php echo substr($awayTeam->getName(), 0, 1); ?></span>
                         <?php endif; ?>
