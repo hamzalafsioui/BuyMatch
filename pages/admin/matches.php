@@ -62,10 +62,10 @@ $requests = $matchRepo->getAllRequests();
                             <div class="flex items-center gap-6 flex-1">
                                 <div class="flex items-center space-x-2">
                                     <div class="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700/50 p-2 hover:scale-105 transition-transform duration-500 overflow-hidden">
-                                        <img src="<?= BASE_URL . "/assets/img/uploads/logos/" . $match['home_team_logo']; ?>" alt="<?= $match['home_team_name']; ?>" class="w-full h-full object-contain">
+                                        <img src="<?= BASE_URL . "/assets/img/teams/" . $match['home_team_logo']; ?>" alt="<?= $match['home_team_name']; ?>" class="w-full h-full object-contain">
                                     </div>
                                     <div class="w-16 h-16 rounded-2xl bg-slate-800/50 border border-slate-700/50 p-2 hover:scale-105 transition-transform duration-500 overflow-hidden relative z-10">
-                                        <img src="<?= BASE_URL .  "/assets/img/uploads/logos/" . $match['away_team_logo']; ?>" alt="<?= $match['away_team_name']; ?>" class="w-full h-full object-contain">
+                                        <img src="<?= BASE_URL .  "/assets/img/teams/" . $match['away_team_logo']; ?>" alt="<?= $match['away_team_name']; ?>" class="w-full h-full object-contain">
                                     </div>
                                 </div>
                                 <div>
