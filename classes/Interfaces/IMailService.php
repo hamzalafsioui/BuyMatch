@@ -1,5 +1,6 @@
 <?php
 
-interface IMailService {
-    public static function sendTicket(User $user,array $tickets);
+interface IMailService
+{
+    public static function sendTicket(User $user, array $tickets);
 }
