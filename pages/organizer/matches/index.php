@@ -104,17 +104,21 @@ $matches = $matchRepo->findByOrganizer($_SESSION['user_id']);
                                     </td>
                                     <td class="py-4 px-4 text-right">
                                         <div class="flex items-center justify-end gap-2">
-                                            <?php if ($match->requestStatus === 'APPROVED' && $match->status === 'DRAFT'): ?>
-                                                <button class="publish-match-btn w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all" data-id="<?php echo $match->matchId; ?>" title="Publish Match">
-                                                    <i class="fa-solid fa-rocket"></i>
+                                            <?php if ($match->status !== 'FINISHED'): ?>
+                                                <?php if ($match->requestStatus === 'APPROVED' && $match->status === 'DRAFT'): ?>
+                                                    <button class="publish-match-btn w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all" data-id="<?php echo $match->matchId; ?>" title="Publish Match">
+                                                        <i class="fa-solid fa-rocket"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                                <a href="edit.php?id=<?php echo $match->matchId; ?>" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                <button class="delete-match-btn w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all" data-id="<?php echo $match->matchId; ?>">
+                                                    <i class="fa-solid fa-trash"></i>
                                                 </button>
+                                            <?php else: ?>
+                                                <span class="text-xs text-slate-500 italic">No actions available</span>
                                             <?php endif; ?>
-                                            <a href="edit.php?id=<?php echo $match->matchId; ?>" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                            <button class="delete-match-btn w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all" data-id="<?php echo $match->matchId; ?>">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -149,7 +153,7 @@ $matches = $matchRepo->findByOrganizer($_SESSION['user_id']);
                     const result = await response.json();
 
                     if (result.success) {
-                        
+
                         location.reload();
                     } else {
                         alert(result.message);
